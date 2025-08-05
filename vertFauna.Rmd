@@ -44,6 +44,7 @@ library(sf)
 library(ggplot2)
 library(DT)
 library(shiny)
+library(plotly)
 ```
 
 ```{r download-tables}
@@ -368,7 +369,7 @@ ggplot(data=adc) +
 
 ## Temporal Precision
 
-This graph shows collectionunit-level temporal precision on a log scale. The x axis says calibrated radiocarbon years but there are a few which are actually in years AD, I need to convert those. And a few which claim to be in years BP but aren't actually... I think all from FID are like that.
+This graph shows dataset-level temporal precision on a log scale. The x axis says calibrated radiocarbon years but there are a few which are actually in years AD, I need to convert those. And a few which claim to be in years BP but aren't actually... I think all from FID are like that.
 
 ```{r collection-chron}
 
@@ -393,20 +394,37 @@ all_distinct_chrons_mut = all_distinct_chrons %>%
 
 all_distinct_chrons_mut = all_distinct_chrons_mut %>% mutate(older=as.numeric(older),younger=as.numeric(younger)) %>% arrange((older)) %>% cbind(index) %>% left_join(datasetdatabases_df,by=join_by(datasetid)) %>% left_join(constituentdatabases_df,by=join_by(databaseid))
 
+all_distinct_chrons_mut = all_distinct_chrons_mut %>% 
+  dplyr::mutate(modyounger = case_when(
+   younger >0 ~ log(younger,base=10),
+   younger <=0 ~ -5),
+   modolder = case_when(
+   older >0 ~ log(older,base=10),
+   older <=0 ~ -4),)
 
-
-ggplot(all_distinct_chrons_mut) +
-  geom_segment(mapping=aes(x=log(younger,base=10),xend=log(older,base=10),y=index,yend=index,color=databasename),linewidth=0.1) +
+ds_chron = ggplot(all_distinct_chrons_mut) +
+  geom_segment(mapping=aes(x=modyounger,
+                           xend=modolder,
+                           y=index,yend=index,
+                           color=databasename,
+                           text = paste("datasetID:", datasetid,
+                                 "<br>Older:", older,
+                                 "<br>Younger:", younger)),linewidth=0.1) +
   #geom_point(mapping=aes(x=log(younger),y=index),color='red') +
   #geom_point(mapping=aes(x=log(older),y=index),color='red') +
   labs(x = "Years BP") +
-  scale_x_continuous(breaks = c(1, 3, 5,7), labels = c("10^1", "10^3","10^5","10^7"),limits=c(-1,7.2)) +
+  scale_x_continuous(breaks = c(1, 3, 5,7), labels = c("10^1", "10^3","10^5","10^7")) +
   guides(color = guide_legend(override.aes = list(
     linetype = 1,   # No line
     shape = 16,     # Solid circle
     linewidth = 5 # Dot size
   ))) +
-  theme_bw()
+  theme_bw() +
+  coord_cartesian(xlim = c(-0.5, 7))
+
+ggplotly(ds_chron, tooltip="text")
+
+
 
 ```
 
@@ -432,19 +450,46 @@ dcc = distinct_chroncontrols %>% mutate(older=as.numeric(agelimitolder),younger=
   #geom_point(mapping=aes(x=log(younger),y=index2),color='red',size=0.05) +
   #geom_point(mapping=aes(x=log(older),y=index2),color='red',size=0.05) +
 
-dcc = dcc %>% dplyr::mutate(modyounger = log(younger,base=10)) %>% dplyr::mutate(modolder = log(older,base=10))
+dcc = dcc %>% 
+  dplyr::mutate(modyounger = case_when(
+   younger >0 ~ log(younger,base=10),
+   younger <=0 ~ -5),
+   modolder = case_when(
+   older >0 ~ log(older,base=10),
+   older <=0 ~ -4),)
 
-ggplot(dcc) +
-  geom_segment(mapping=aes(x=modyounger,xend=modolder,y=index2,yend=index2,color=databasename),linewidth=0.1) + 
+dcc_p = ggplot(dcc) +
+  geom_segment(mapping=aes(x=modyounger,
+                           xend=modolder,
+                           y=index2,
+                           yend=index2,
+                           color=databasename,
+                           text = paste("chroncontrolID:", chroncontrolid,
+                                 "<br>Older:", older,
+                                 "<br>Younger:", younger)),
+               alpha=0.4,stroke=NA,linewidth=0.1) + 
   labs(x = "Years BP") +
-  scale_x_continuous(breaks = c(1, 3, 5,7), labels = c("10^1", "10^3", "10^5","10^7"),limits=c(-1,7.2)) +
+  scale_x_continuous(breaks = c(1, 3, 5,7), labels = c("10^1", "10^3", "10^5","10^7")) +
   guides(color = guide_legend(override.aes = list(
     linetype = 1,   # No line
     shape = 16,     # Solid circle
-    linewidth = 5 # Dot size
+    linewidth = 5,
+    alpha=1
+    
   ))) +
-  theme_bw()
+  theme_bw() +
+  coord_cartesian(xlim = c(-0.5, 7))
 
+
+ggplotly(dcc_p, tooltip="text")
+
+```
+
+Should I interpret the values below as AD?
+
+```{r weirods}
+
+dcc %>% dplyr::filter(older <= -75 | younger < -75) %>% datatable(rownames=FALSE)
 
 ```
 
@@ -616,10 +661,15 @@ calc2 = calculator %>% group_by(datasetid,uncertainty) %>% summarize(unc_metric=
 unc_tallies = unc_tallies %>% left_join(calc2) %>% mutate(unc_metric=unc_metric/sum)
 
 
-vdf = vert_datasets %>% left_join(unc_tallies) %>% drop_na(unc_metric)
+vdf = vert_datasets %>% left_join(unc_tallies) %>% drop_na(unc_metric) %>% 
+  dplyr::mutate(link = "<a target='_blank' href='https://data.neotomadb.org/datasets/",datasetid,"'/>",sitename,"</a>")
 
-ggplot(vdf) +
-  geom_point(mapping=aes(x=log(sum,base=10),y=unc_metric,color=databasename),alpha=0.4,stroke=NA) +
+plot_vdf = ggplot(vdf) +
+  geom_point(mapping=aes(x=log(sum,base=10),
+                         y=unc_metric,color=databasename,
+                         text = paste(sitename,
+                                 "<br>Number specimens:", sum,
+                                 "<br>Uncertainty:", unc_metric)),alpha=0.4,stroke=NA) +
   theme_bw() +
   scale_x_continuous(breaks = c(0, 1,2, 3,4,5), labels = c("10^0", "10^1" ,"10^2","10^3","10^4","10^5"),limits=c(-0.2,5)) +
   labs(x="Species Tally by Site (log 10)") +
@@ -629,6 +679,8 @@ ggplot(vdf) +
     size=2,
     alpha = 1 # Dot size
   ))) 
+
+ggplotly(plot_vdf, tooltip="text")
 
 
 
@@ -640,8 +692,11 @@ Below is a graph that shows how precision has evolved over time:
 
 vdf = vert_datasets %>% left_join(unc_tallies) %>% drop_na(unc_metric)
 
-ggplot(vdf) +
-  geom_point(mapping=aes(x=dataset_date,y=unc_metric,color=databasename),alpha=0.4,stroke=NA) +
+time_vdf =ggplot(vdf) +
+  geom_point(mapping=aes(x=dataset_date,y=unc_metric,color=databasename,
+                         text = paste(sitename,
+                                 "<br>Number specimens:", sum,
+                                 "<br>Uncertainty:", unc_metric)),alpha=0.4,stroke=NA) +
   theme_bw() +
   guides(color = guide_legend(override.aes = list(
     linetype = 1,   # No line
@@ -649,6 +704,10 @@ ggplot(vdf) +
     size=2,
     alpha = 1 # Dot size
   ))) 
+
+
+
+ggplotly(time_vdf, tooltip="text")
 
 ```
 
