@@ -1,0 +1,599 @@
+index,occurrenceid,taxonid,originalname,correctedname,genus,species,uncertainty
+1,1,6047,Erethizon dorsata,Erethizon dorsata,Erethizon,dorsata,species
+2,2,6159,Lepus sp.,Lepus sp.,Lepus,sp.,genus
+3,3,6186,Marmota sp.,Marmota sp.,Marmota,sp.,genus
+4,4,6566,Spermophilus parryii,Spermophilus parryii,Spermophilus,parryii,species
+5,5,6711,Arvicolinae,Arvicolinae,Arvicolinae,NA,family
+6,6,19661,Lepus othus,Lepus othus,Lepus,othus,species
+7,7,28186,Marmota broweri,Marmota broweri,Marmota,broweri,species
+8,8,28209,Lemmini,Lemmini,Lemmini,NA,tribe
+9,9,6598,Sylvilagus nuttallii,Sylvilagus nuttallii,Sylvilagus,nuttallii,species
+10,10,5962,Cynomys ludovicianus,Cynomys ludovicianus,Cynomys,ludovicianus,species
+11,11,6081,Geomys bursarius,Geomys bursarius,Geomys,bursarius,species
+12,12,6184,Marmota monax,Marmota monax,Marmota,monax,species
+13,13,6218,Microtus ochrogaster,Microtus ochrogaster,Microtus,ochrogaster,species
+14,14,6226,Microtus sp.,Microtus sp.,Microtus,sp.,genus
+15,15,6344,Oryzomys palustris,Oryzomys palustris,Oryzomys,palustris,species
+16,16,6345,Oryzomys sp.,Oryzomys sp.,Oryzomys,sp.,genus
+17,17,6466,Rattus norvegicus,Rattus norvegicus,Rattus,norvegicus,species
+18,18,7267,cf. Neotoma floridana,Neotoma floridana,Neotoma,floridana,cf_species
+19,19,7285,cf. Onychomys leucogaster,Onychomys leucogaster,Onychomys,leucogaster,cf_species
+20,20,7302,cf. Chaetodipus hispidus,Chaetodipus hispidus,Chaetodipus,hispidus,cf_species
+21,21,7344,cf. Sigmodon hispidus,Sigmodon hispidus,Sigmodon,hispidus,cf_species
+22,22,5875,Blarina brevicauda,Blarina brevicauda,Blarina,brevicauda,species
+23,23,5928,Castor canadensis,Castor canadensis,Castor,canadensis,species
+24,24,5947,Condylura cristata,Condylura cristata,Condylura,cristata,species
+25,25,5953,Cricetidae,Cricetidae,Cricetidae,NA,family
+26,26,5954,Cryptotis parva,Cryptotis parva,Cryptotis,parva,species
+27,27,5961,Cynomys leucurus,Cynomys leucurus,Cynomys,leucurus,species
+28,28,5975,Dicrostonyx hudsonius,Dicrostonyx hudsonius,Dicrostonyx,hudsonius,species
+29,29,5977,Dicrostonyx torquatus,Dicrostonyx torquatus,Dicrostonyx,torquatus,species
+30,30,5997,Dipodomys microps,Dipodomys microps,Dipodomys,microps,species
+31,31,6002,Dipodomys sp.,Dipodomys sp.,Dipodomys,sp.,genus
+32,32,6091,Glaucomys volans,Glaucomys volans,Glaucomys,volans,species
+33,33,6151,Leporidae,Leporidae,Leporidae,NA,family
+34,34,6155,Lepus americanus,Lepus americanus,Lepus,americanus,species
+35,35,6156,Lepus californicus,Lepus californicus,Lepus,californicus,species
+36,36,6161,Lepus townsendii,Lepus townsendii,Lepus,townsendii,species
+37,37,6211,Microtus longicaudus,Microtus longicaudus,Microtus,longicaudus,species
+38,38,6223,Microtus pennsylvanicus,Microtus pennsylvanicus,Microtus,pennsylvanicus,species
+39,39,6224,Microtus pinetorum,Microtus pinetorum,Microtus,pinetorum,species
+40,40,6245,Mus musculus,Mus musculus,Mus,musculus,species
+41,41,6297,Neotoma floridana,Neotoma floridana,Neotoma,floridana,species
+42,42,6300,Neotoma lepida,Neotoma lepida,Neotoma,lepida,species
+43,43,6304,Neotoma sp.,Neotoma sp.,Neotoma,sp.,genus
+44,44,6325,Onychomys leucogaster,Onychomys leucogaster,Onychomys,leucogaster,species
+45,45,6333,Ondatra sp.,Ondatra sp.,Ondatra,sp.,genus
+46,46,6334,Ondatra zibethicus,Ondatra zibethicus,Ondatra,zibethicus,species
+47,47,6368,Parascalops breweri,Parascalops breweri,Parascalops,breweri,species
+48,48,6383,Perognathus longimembris,Perognathus longimembris,Perognathus,longimembris,species
+49,49,6403,Peromyscus leucopus,Peromyscus leucopus,Peromyscus,leucopus,species
+50,50,6405,Peromyscus maniculatus,Peromyscus maniculatus,Peromyscus,maniculatus,species
+51,51,6413,Peromyscus sp.,Peromyscus sp.,Peromyscus,sp.,genus
+52,52,6418,Phenacomys intermedius,Phenacomys intermedius,Phenacomys,intermedius,species
+53,53,6462,Rodentia,Rodentia,Rodentia,NA,order
+54,54,6471,Reithrodontomys megalotis,Reithrodontomys megalotis,Reithrodontomys,megalotis,species
+55,55,6475,Reithrodontomys sp.,Reithrodontomys sp.,Reithrodontomys,sp.,genus
+56,56,6480,Scalopus aquaticus,Scalopus aquaticus,Scalopus,aquaticus,species
+57,57,6488,Sciuridae,Sciuridae,Sciuridae,NA,family
+58,58,6493,Sciurus carolinensis,Sciurus carolinensis,Sciurus,carolinensis,species
+59,59,6496,Sciurus niger,Sciurus niger,Sciurus,niger,species
+60,60,6497,Sciurus sp.,Sciurus sp.,Sciurus,sp.,genus
+61,61,6501,Sigmodon hispidus,Sigmodon hispidus,Sigmodon,hispidus,species
+62,62,6517,Sorex cinereus,Sorex cinereus,Sorex,cinereus,species
+63,63,6521,Sorex fumeus,Sorex fumeus,Sorex,fumeus,species
+64,64,6544,Sorex sp.,Sorex sp.,Sorex,sp.,genus
+65,65,6560,Spermophilus franklinii,Spermophilus franklinii,Spermophilus,franklinii,species
+66,66,6567,Spermophilus richardsonii,Spermophilus richardsonii,Spermophilus,richardsonii,species
+67,67,6569,Spermophilus sp.,Spermophilus sp.,Spermophilus,sp.,genus
+68,68,6573,Spermophilus tridecemlineatus,Spermophilus tridecemlineatus,Spermophilus,tridecemlineatus,species
+69,69,6590,Sylvilagus aquaticus,Sylvilagus aquaticus,Sylvilagus,aquaticus,species
+70,70,6594,Sylvilagus floridanus,Sylvilagus floridanus,Sylvilagus,floridanus,species
+71,71,6600,Sylvilagus sp.,Sylvilagus sp.,Sylvilagus,sp.,genus
+72,72,6606,Synaptomys cooperi,Synaptomys cooperi,Synaptomys,cooperi,species
+73,73,6620,Tamias minimus,Tamias minimus,Tamias,minimus,species
+74,74,6629,Tamias striatus,Tamias striatus,Tamias,striatus,species
+75,75,6633,Tamiasciurus hudsonicus,Tamiasciurus hudsonicus,Tamiasciurus,hudsonicus,species
+76,76,6666,Thomomys talpoides,Thomomys talpoides,Thomomys,talpoides,species
+77,77,6699,Zapus hudsonius,Zapus hudsonius,Zapus,hudsonius,species
+78,78,6700,Zapus princeps,Zapus princeps,Zapus,princeps,species
+79,79,7012,Chaetodipus hispidus,Chaetodipus hispidus,Chaetodipus,hispidus,species
+80,80,7034,Myodes gapperi,Myodes gapperi,Myodes,gapperi,species
+81,81,7298,cf. Perognathus fasciatus,Perognathus fasciatus,Perognathus,fasciatus,cf_species
+82,82,7332,cf. Reithrodontomys megalotis,Reithrodontomys megalotis,Reithrodontomys,megalotis,cf_species
+83,83,7378,cf. Spermophilus tridecemlineatus,Spermophilus tridecemlineatus,Spermophilus,tridecemlineatus,cf_species
+84,84,13884,Rodentia sp.,Rodentia,Rodentia,NA,order
+85,85,15335,cf. Perognathus sp.,Perognathus sp.,Perognathus,sp.,cf_genus
+86,86,22676,Glaucomys cf. G. sabrinus,Glaucomys sabrinus,Glaucomys,sabrinus,cf_species
+87,87,35567,Myodes cf. M. gapperi,Myodes gapperi,Myodes,gapperi,cf_species
+88,88,35569,Microtus cf. M. chrotorrhinus,Microtus chrotorrhinus,Microtus,chrotorrhinus,cf_species
+89,89,35570,Microtus cf. M. pinetorum,Microtus pinetorum,Microtus,pinetorum,cf_species
+90,90,5837,Ammospermophilus leucurus,Ammospermophilus leucurus,Ammospermophilus,leucurus,species
+91,91,5839,Ammospermophilus sp.,Ammospermophilus sp.,Ammospermophilus,sp.,genus
+92,92,5846,Aplodontia rufa,Aplodontia rufa,Aplodontia,rufa,species
+93,93,5876,Blarina carolinensis,Blarina carolinensis,Blarina,carolinensis,species
+94,94,5877,Blarina hylophaga,Blarina hylophaga,Blarina,hylophaga,species
+95,95,5879,Blarina sp.,Blarina sp.,Blarina,sp.,genus
+96,96,5890,Brachylagus idahoensis,Brachylagus idahoensis,Brachylagus,idahoensis,species
+97,97,5932,Castoroides ohioensis,Castoroides ohioensis,Castoroides,ohioensis,species
+98,98,5960,Cynomys gunnisoni,Cynomys gunnisoni,Cynomys,gunnisoni,species
+99,99,5963,Cynomys sp.,Cynomys sp.,Cynomys,sp.,genus
+100,100,5964,Cynomys parvidens,Cynomys parvidens,Cynomys,parvidens,species
+101,101,5990,Dipodomys deserti,Dipodomys deserti,Dipodomys,deserti,species
+102,102,5996,Dipodomys merriami,Dipodomys merriami,Dipodomys,merriami,species
+103,103,6000,Dipodomys ordii,Dipodomys ordii,Dipodomys,ordii,species
+104,104,6003,Dipodomys deserti/D. spectabilis,Dipodomys deserti,Dipodomys,deserti,species_2
+105,104,6003,Dipodomys deserti/D. spectabilis,Dipodomys spectabilis,Dipodomys,spectabilis,species_2
+106,105,6078,Geomyidae,Geomyidae,Geomyidae,NA,family
+107,106,6086,Geomys sp.,Geomys sp.,Geomys,sp.,genus
+108,107,6089,Glaucomys sabrinus,Glaucomys sabrinus,Glaucomys,sabrinus,species
+109,108,6090,Glaucomys sp.,Glaucomys sp.,Glaucomys,sp.,genus
+110,109,6154,Lepus alleni,Lepus alleni,Lepus,alleni,species
+111,110,6183,Marmota flaviventris,Marmota flaviventris,Marmota,flaviventris,species
+112,111,6202,Microdipodops megacephalus,Microdipodops megacephalus,Microdipodops,megacephalus,species
+113,112,6207,Microtus californicus,Microtus californicus,Microtus,californicus,species
+114,113,6208,Microtus chrotorrhinus,Microtus chrotorrhinus,Microtus,chrotorrhinus,species
+115,114,6212,Microtus longicaudus/M. montanus,Microtus longicaudus,Microtus,longicaudus,species_2
+116,114,6212,Microtus longicaudus/M. montanus,Microtus montanus,Microtus,montanus,species_2
+117,115,6217,Microtus montanus,Microtus montanus,Microtus,montanus,species
+118,116,6219,Microtus ochrogaster/M. pinetorum,Microtus ochrogaster,Microtus,ochrogaster,species_2
+119,116,6219,Microtus ochrogaster/M. pinetorum,Microtus pinetorum,Microtus,pinetorum,species_2
+120,117,6225,Microtus richardsoni,Microtus richardsoni,Microtus,richardsoni,species
+121,118,6227,Microtus townsendii,Microtus townsendii,Microtus,townsendii,species
+122,119,6228,Microtus xanthognathus,Microtus xanthognathus,Microtus,xanthognathus,species
+123,120,6282,Napaeozapus insignis,Napaeozapus insignis,Napaeozapus,insignis,species
+124,121,6290,Neofiber alleni,Neofiber alleni,Neofiber,alleni,species
+125,122,6294,Neotoma albigula,Neotoma albigula,Neotoma,albigula,species
+126,123,6295,Neotoma cinerea,Neotoma cinerea,Neotoma,cinerea,species
+127,124,6298,Neotoma fuscipes,Neotoma fuscipes,Neotoma,fuscipes,species
+128,125,6301,Neotoma mexicana,Neotoma mexicana,Neotoma,mexicana,species
+129,126,6302,Neotoma micropus,Neotoma micropus,Neotoma,micropus,species
+130,127,6312,Notiosorex crawfordi,Notiosorex crawfordi,Notiosorex,crawfordi,species
+131,128,6320,Ochotona princeps,Ochotona princeps,Ochotona,princeps,species
+132,129,6326,Onychomys sp.,Onychomys sp.,Onychomys,sp.,genus
+133,130,6339,Onychomys torridus,Onychomys torridus,Onychomys,torridus,species
+134,131,6376,Perognathus fasciatus,Perognathus fasciatus,Perognathus,fasciatus,species
+135,132,6377,Perognathus flavescens,Perognathus flavescens,Perognathus,flavescens,species
+136,133,6386,Perognathus parvus,Perognathus parvus,Perognathus,parvus,species
+137,134,6388,Perognathus sp.,Perognathus sp.,Perognathus,sp.,genus
+138,135,6393,Peromyscus boylii,Peromyscus boylii,Peromyscus,boylii,species
+139,136,6397,Peromyscus crinitus,Peromyscus crinitus,Peromyscus,crinitus,species
+140,137,6401,Peromyscus gossypinus,Peromyscus gossypinus,Peromyscus,gossypinus,species
+141,138,6420,Phenacomys sp.,Phenacomys sp.,Phenacomys,sp.,genus
+142,139,6467,Rattus rattus,Rattus rattus,Rattus,rattus,species
+143,140,6468,Rattus sp.,Rattus sp.,Rattus,sp.,genus
+144,141,6473,Reithrodontomys montanus,Reithrodontomys montanus,Reithrodontomys,montanus,species
+145,142,6482,Scapanus latimanus,Scapanus latimanus,Scapanus,latimanus,species
+146,143,6484,Scapanus orarius,Scapanus orarius,Scapanus,orarius,species
+147,144,6485,Scapanus sp.,Scapanus sp.,Scapanus,sp.,genus
+148,145,6492,Sciurus arizonensis,Sciurus arizonensis,Sciurus,arizonensis,species
+149,146,6494,Sciurus griseus,Sciurus griseus,Sciurus,griseus,species
+150,147,6506,Sigmodon ochrognathus,Sigmodon ochrognathus,Sigmodon,ochrognathus,species
+151,148,6507,Sigmodon sp.,Sigmodon sp.,Sigmodon,sp.,genus
+152,149,6514,Sorex arcticus,Sorex arcticus,Sorex,arcticus,species
+153,150,6519,Sorex dispar,Sorex dispar,Sorex,dispar,species
+154,151,6524,Sorex hoyi,Sorex hoyi,Sorex,hoyi,species
+155,152,6533,Sorex merriami,Sorex merriami,Sorex,merriami,species
+156,153,6539,Sorex palustris,Sorex palustris,Sorex,palustris,species
+157,154,6549,Soricidae,Soricidae,Soricidae,NA,family
+158,155,6550,Spermophilus armatus,Spermophilus armatus,Spermophilus,armatus,species
+159,156,6551,Spermophilus beecheyi,Spermophilus beecheyi,Spermophilus,beecheyi,species
+160,157,6552,Spermophilus beldingi,Spermophilus beldingi,Spermophilus,beldingi,species
+161,158,6556,Spermophilus columbianus,Spermophilus columbianus,Spermophilus,columbianus,species
+162,159,6561,Spermophilus lateralis,Spermophilus lateralis,Spermophilus,lateralis,species
+163,160,6570,Spermophilus spilosoma,Spermophilus spilosoma,Spermophilus,spilosoma,species
+164,161,6571,Spermophilus tereticaudus,Spermophilus tereticaudus,Spermophilus,tereticaudus,species
+165,162,6572,Spermophilus townsendii,Spermophilus townsendii,Spermophilus,townsendii,species
+166,163,6574,Spermophilus variegatus,Spermophilus variegatus,Spermophilus,variegatus,species
+167,164,6575,Spermophilus washingtoni,Spermophilus washingtoni,Spermophilus,washingtoni,species
+168,165,6591,Sylvilagus audubonii,Sylvilagus audubonii,Sylvilagus,audubonii,species
+169,166,6593,Sylvilagus bachmani,Sylvilagus bachmani,Sylvilagus,bachmani,species
+170,167,6599,Sylvilagus palustris,Sylvilagus palustris,Sylvilagus,palustris,species
+171,168,6604,Synaptomys australis,Synaptomys australis,Synaptomys,australis,species
+172,169,6605,Synaptomys borealis,Synaptomys borealis,Synaptomys,borealis,species
+173,170,6608,Synaptomys sp.,Synaptomys sp.,Synaptomys,sp.,genus
+174,171,6618,Tamias dorsalis,Tamias dorsalis,Tamias,dorsalis,species
+175,172,6624,Tamias quadrivittatus,Tamias quadrivittatus,Tamias,quadrivittatus,species
+176,173,6627,Tamias sp.,Tamias sp.,Tamias,sp.,genus
+177,174,6630,Tamias townsendii,Tamias townsendii,Tamias,townsendii,species
+178,175,6632,Tamiasciurus douglasii,Tamiasciurus douglasii,Tamiasciurus,douglasii,species
+179,176,6634,Tamiasciurus sp.,Tamiasciurus sp.,Tamiasciurus,sp.,genus
+180,177,6657,Thomomys bottae,Thomomys bottae,Thomomys,bottae,species
+181,178,6660,Thomomys mazama,Thomomys mazama,Thomomys,mazama,species
+182,179,6663,Thomomys sp.,Thomomys sp.,Thomomys,sp.,genus
+183,180,6668,Thomomys umbrinus,Thomomys umbrinus,Thomomys,umbrinus,species
+184,181,6701,Zapus sp.,Zapus sp.,Zapus,sp.,genus
+185,182,6704,Blarina brevicauda kirtlandi,Blarina brevicauda,Blarina,brevicauda,species
+186,183,6833,Lemmiscus curtatus,Lemmiscus curtatus,Lemmiscus,curtatus,species
+187,184,6840,Lepus,Lepus sp.,Lepus,sp.,genus
+188,185,6862,Mus,Mus sp.,Mus,sp.,genus
+189,186,6878,Hydrochoerinae,Hydrochoerinae,Hydrochoerinae,NA,family
+190,187,6997,Tamias (Neotamias),Tamias (Neotamias) sp.,Tamias,(Neotamias),subgenus
+191,188,7008,Chaetodipus baileyi,Chaetodipus baileyi,Chaetodipus,baileyi,species
+192,189,7036,Myodes sp.,Myodes sp.,Myodes,sp.,genus
+193,190,7047,Cratogeomys castanops,Cratogeomys castanops,Cratogeomys,castanops,species
+194,191,7069,?Microtus sp.,Microtus sp.,Microtus,sp.,cf_genus
+195,192,7081,?Spermophilus lateralis,Spermophilus lateralis,Spermophilus,lateralis,cf_species
+196,193,7099,cf. Ammospermophilus leucurus,Ammospermophilus leucurus,Ammospermophilus,leucurus,cf_species
+197,194,7101,cf. Ammospermophilus sp.,Ammospermophilus sp.,Ammospermophilus,sp.,cf_genus
+198,195,7133,cf. Castor canadensis,Castor canadensis,Castor,canadensis,cf_species
+199,196,7142,cf. Myodes gapperi,Myodes gapperi,Myodes,gapperi,cf_species
+200,197,7146,cf. Cynomys gunnisoni,Cynomys gunnisoni,Cynomys,gunnisoni,cf_species
+201,198,7149,cf. Cynomys parvidens,Cynomys parvidens,Cynomys,parvidens,cf_species
+202,199,7153,cf. Dicrostonyx torquatus,Dicrostonyx torquatus,Dicrostonyx,torquatus,cf_species
+203,200,7156,cf. Dipodomys deserti,Dipodomys deserti,Dipodomys,deserti,cf_species
+204,201,7157,cf. Dipodomys heermanni,Dipodomys heermanni,Dipodomys,heermanni,cf_species
+205,202,7158,cf. Dipodomys merriami,Dipodomys merriami,Dipodomys,merriami,cf_species
+206,203,7159,cf. Dipodomys ordii,Dipodomys ordii,Dipodomys,ordii,cf_species
+207,204,7185,cf. Geomys bursarius,Geomys bursarius,Geomys,bursarius,cf_species
+208,205,7205,cf. Lepus americanus,Lepus americanus,Lepus,americanus,cf_species
+209,206,7206,cf. Lepus californicus,Lepus californicus,Lepus,californicus,cf_species
+210,207,7207,cf. Lepus sp.,Lepus sp.,Lepus,sp.,cf_genus
+211,208,7209,cf. Lepus townsendii,Lepus townsendii,Lepus,townsendii,cf_species
+212,209,7218,cf. Marmota flaviventris,Marmota flaviventris,Marmota,flaviventris,cf_species
+213,210,7219,cf. Marmota monax,Marmota monax,Marmota,monax,cf_species
+214,211,7228,cf. Microtus californicus,Microtus californicus,Microtus,californicus,cf_species
+215,212,7229,cf. Microtus longicaudus,Microtus longicaudus,Microtus,longicaudus,cf_species
+216,213,7232,cf. Microtus miurus,Microtus miurus,Microtus,miurus,cf_species
+217,214,7233,cf. Microtus montanus,Microtus montanus,Microtus,montanus,cf_species
+218,215,7234,cf. Microtus ochrogaster,Microtus ochrogaster,Microtus,ochrogaster,cf_species
+219,216,7236,cf. Microtus pennsylvanicus,Microtus pennsylvanicus,Microtus,pennsylvanicus,cf_species
+220,217,7237,cf. Microtus pinetorum,Microtus pinetorum,Microtus,pinetorum,cf_species
+221,218,7238,cf. Microtus richardsoni,Microtus richardsoni,Microtus,richardsoni,cf_species
+222,219,7265,cf. Neotoma albigula,Neotoma albigula,Neotoma,albigula,cf_species
+223,220,7266,cf. Neotoma cinerea,Neotoma cinerea,Neotoma,cinerea,cf_species
+224,221,7270,cf. Neotoma lepida,Neotoma lepida,Neotoma,lepida,cf_species
+225,222,7271,cf. Neotoma mexicana,Neotoma mexicana,Neotoma,mexicana,cf_species
+226,223,7274,cf. Neotoma stephensi,Neotoma stephensi,Neotoma,stephensi,cf_species
+227,224,7276,cf. Notiosorex sp.,Notiosorex sp.,Notiosorex,sp.,cf_genus
+228,225,7284,cf. Ondatra zibethicus,Ondatra zibethicus,Ondatra,zibethicus,cf_species
+229,226,7286,cf. Onychomys torridus,Onychomys torridus,Onychomys,torridus,cf_species
+230,227,7289,cf. Oryzomys palustris,Oryzomys palustris,Oryzomys,palustris,cf_species
+231,228,7290,cf. Oryzomys sp.,Oryzomys sp.,Oryzomys,sp.,cf_genus
+232,229,7300,cf. Perognathus flavus,Perognathus flavus,Perognathus,flavus,cf_species
+233,230,7301,cf. Chaetodipus formosus,Chaetodipus formosus,Chaetodipus,formosus,cf_species
+234,231,7309,cf. Peromyscus crinitus,Peromyscus crinitus,Peromyscus,crinitus,cf_species
+235,232,7313,cf. Peromyscus leucopus,Peromyscus leucopus,Peromyscus,leucopus,cf_species
+236,233,7314,cf. Peromyscus maniculatus,Peromyscus maniculatus,Peromyscus,maniculatus,cf_species
+237,234,7316,cf. Peromyscus truei,Peromyscus truei,Peromyscus,truei,cf_species
+238,235,7317,cf. Phenacomys intermedius,Phenacomys intermedius,Phenacomys,intermedius,cf_species
+239,236,7328,cf. Rattus norvegicus,Rattus norvegicus,Rattus,norvegicus,cf_species
+240,237,7334,cf. Reithrodontomys sp.,Reithrodontomys sp.,Reithrodontomys,sp.,cf_genus
+241,238,7337,cf. Scapanus orarius,Scapanus orarius,Scapanus,orarius,cf_species
+242,239,7338,cf. Scapanus townsendii,Scapanus townsendii,Scapanus,townsendii,cf_species
+243,240,7340,cf. Sciurus carolinensis,Sciurus carolinensis,Sciurus,carolinensis,cf_species
+244,241,7341,cf. Sciurus niger,Sciurus niger,Sciurus,niger,cf_species
+245,242,7342,cf. Sciurus sp.,Sciurus sp.,Sciurus,sp.,cf_genus
+246,243,7350,cf. Sorex cinereus,Sorex cinereus,Sorex,cinereus,cf_species
+247,244,7355,cf. Sorex longirostris,Sorex longirostris,Sorex,longirostris,cf_species
+248,245,7360,cf. Sorex palustris,Sorex palustris,Sorex,palustris,cf_species
+249,246,7363,cf. Sorex vagrans,Sorex vagrans,Sorex,vagrans,cf_species
+250,247,7367,cf. Spermophilus columbianus,Spermophilus columbianus,Spermophilus,columbianus,cf_species
+251,248,7369,cf. Spermophilus franklinii,Spermophilus franklinii,Spermophilus,franklinii,cf_species
+252,249,7373,cf. Spermophilus richardsonii,Spermophilus richardsonii,Spermophilus,richardsonii,cf_species
+253,250,7377,cf. Spermophilus townsendii,Spermophilus townsendii,Spermophilus,townsendii,cf_species
+254,251,7379,cf. Spermophilus variegatus,Spermophilus variegatus,Spermophilus,variegatus,cf_species
+255,252,7380,cf. Spermophilus washingtoni,Spermophilus washingtoni,Spermophilus,washingtoni,cf_species
+256,253,7385,cf. Sylvilagus aquaticus,Sylvilagus aquaticus,Sylvilagus,aquaticus,cf_species
+257,254,7386,cf. Sylvilagus audubonii,Sylvilagus audubonii,Sylvilagus,audubonii,cf_species
+258,255,7387,cf. Sylvilagus bachmani,Sylvilagus bachmani,Sylvilagus,bachmani,cf_species
+259,256,7388,cf. Sylvilagus floridanus,Sylvilagus floridanus,Sylvilagus,floridanus,cf_species
+260,257,7389,cf. Sylvilagus idahoensis,Sylvilagus idahoensis,Sylvilagus,idahoensis,cf_species
+261,258,7390,cf. Sylvilagus nuttallii,Sylvilagus nuttallii,Sylvilagus,nuttallii,cf_species
+262,259,7392,cf. Sylvilagus sp.,Sylvilagus sp.,Sylvilagus,sp.,cf_genus
+263,260,7393,cf. Sylvilagus transitionalis,Sylvilagus transitionalis,Sylvilagus,transitionalis,cf_species
+264,261,7396,cf. Synaptomys australis,Synaptomys australis,Synaptomys,australis,cf_species
+265,262,7397,cf. Synaptomys cooperi,Synaptomys cooperi,Synaptomys,cooperi,cf_species
+266,263,7402,cf. Tamias sp.,Tamias sp.,Tamias,sp.,cf_genus
+267,264,7405,cf. Tamiasciurus hudsonicus,Tamiasciurus hudsonicus,Tamiasciurus,hudsonicus,cf_species
+268,265,7406,cf. Tamiasciurus sp.,Tamiasciurus sp.,Tamiasciurus,sp.,cf_genus
+269,266,7414,cf. Thomomys talpoides,Thomomys talpoides,Thomomys,talpoides,cf_species
+270,267,7428,cf. Zapus princeps,Zapus princeps,Zapus,princeps,cf_species
+271,268,7436,Sylvilagus audubonii/S. nuttallii,Sylvilagus audubonii,Sylvilagus,audubonii,species_2
+272,268,7436,Sylvilagus audubonii/S. nuttallii,Sylvilagus nuttallii,Sylvilagus,nuttallii,species_2
+273,269,7447,Sciurus carolinensis/S. niger,Sciurus carolinensis,Sciurus,carolinensis,species_2
+274,269,7447,Sciurus carolinensis/S. niger,Sciurus niger,Sciurus,niger,species_2
+275,270,7448,Neotoma cinerea/N. mexicana,Neotoma cinerea,Neotoma,cinerea,species_2
+276,270,7448,Neotoma cinerea/N. mexicana,Neotoma mexicana,Neotoma,mexicana,species_2
+277,271,7501,Arvicolinae sp.,Arvicolinae sp.,Arvicolinae,sp.,genus
+278,272,7665,Thomomys cf. T. talpoides,Thomomys talpoides,Thomomys,talpoides,cf_species
+279,273,7666,Onychomys cf. O. leucogaster,Onychomys leucogaster,Onychomys,leucogaster,cf_species
+280,274,7667,Marmota cf. M. flaviventris,Marmota flaviventris,Marmota,flaviventris,cf_species
+281,275,7668,Dipodomys cf. D. ordii,Dipodomys ordii,Dipodomys,ordii,cf_species
+282,276,7669,Perognathus cf. P. parvus,Perognathus parvus,Perognathus,parvus,cf_species
+283,277,7686,Sylvilagus floridanus/S. transitionalis,Sylvilagus floridanus,Sylvilagus,floridanus,species_2
+284,277,7686,Sylvilagus floridanus/S. transitionalis,Sylvilagus transitionalis,Sylvilagus,transitionalis,species_2
+285,278,7779,Myodes/Microtus,Myodes sp.,Myodes,sp.,genus_2
+286,278,7779,Myodes/Microtus,Microtus sp.,Microtus,sp.,genus_2
+287,279,7780,Peromyscus cf. P. maniculatus,Peromyscus maniculatus,Peromyscus,maniculatus,cf_species
+288,280,7781,Neotoma cf. N. cinerea,Neotoma cinerea,Neotoma,cinerea,cf_species
+289,281,7783,?Castor canadensis,Castor canadensis,Castor,canadensis,cf_species
+290,282,7785,?Marmota,Marmota sp.,Marmota,sp.,cf_genus
+291,283,7786,cf. Lepus,Lepus ,Lepus,NA,cf_species
+292,284,7787,?Neotoma,Neotoma sp.,Neotoma,sp.,cf_genus
+293,285,7790,Microtus cf. M. montanus,Microtus montanus,Microtus,montanus,cf_species
+294,286,7791,cf. Peromyscus,Peromyscus ,Peromyscus,NA,cf_species
+295,287,7792,cf. Myotis,Myotis ,Myotis,NA,cf_species
+296,288,7794,Spermophilus cf. S. armatus,Spermophilus armatus,Spermophilus,armatus,cf_species
+297,289,7796,Sylvilagus/Lepus,Sylvilagus sp.,Sylvilagus,sp.,genus_2
+298,289,7796,Sylvilagus/Lepus,Lepus sp.,Lepus,sp.,genus_2
+299,290,7797,Lepus cf. L. americanus,Lepus americanus,Lepus,americanus,cf_species
+300,291,13881,cf. Lemmiscus curtatus,Lemmiscus curtatus,Lemmiscus,curtatus,cf_species
+301,292,35771,Sorex cf. S. longirostris,Sorex longirostris,Sorex,longirostris,cf_species
+302,293,6261,Myocastor coypus,Myocastor coypus,Myocastor,coypus,species
+303,294,5831,Allophaiomys pliocaenicus,Allophaiomys pliocaenicus,Allophaiomys,pliocaenicus,species
+304,295,5854,Atopomys texensis,Atopomys texensis,Atopomys,texensis,species
+305,296,5974,Dicrostonyx groenlandicus,Dicrostonyx groenlandicus,Dicrostonyx,groenlandicus,species
+306,297,6001,Dipodomys panamintinus,Dipodomys panamintinus,Dipodomys,panamintinus,species
+307,298,6136,Lagomorpha,Lagomorpha,Lagomorpha,NA,order
+308,299,6140,Lasiopodomys deceitensis,Lasiopodomys deceitensis,Lasiopodomys,deceitensis,species
+309,300,6148,Lemmus sibiricus,Lemmus sibiricus,Lemmus,sibiricus,species
+310,301,6149,Lemmus sp.,Lemmus sp.,Lemmus,sp.,genus
+311,302,6162,Liomys irroratus,Liomys irroratus,Liomys,irroratus,species
+312,303,6182,Marmota caligata,Marmota caligata,Marmota,caligata,species
+313,304,6216,Microtus miurus,Microtus miurus,Microtus,miurus,species
+314,305,6220,Microtus oeconomus,Microtus oeconomus,Microtus,oeconomus,species
+315,306,6222,Microtus paroperarius,Microtus paroperarius,Microtus,paroperarius,species
+316,307,6239,Mimomys virginianus,Mimomys virginianus,Mimomys,virginianus,species
+317,308,6244,Muridae,Muridae,Muridae,NA,family
+318,309,6321,Ochotona sp.,Ochotona sp.,Ochotona,sp.,genus
+319,310,6335,Ondatra zibethicus /annectens,Ondatra zibethicus,Ondatra,zibethicus,species_2
+320,310,6335,Ondatra zibethicus /annectens,Ondatra annectens,Ondatra,annectens,species_2
+321,311,6534,Sorex monticolus,Sorex monticolus,Sorex,monticolus,species
+322,312,6547,Sorex tundrensis,Sorex tundrensis,Sorex,tundrensis,species
+323,313,6564,Spermophilus mexicanus,Spermophilus mexicanus,Spermophilus,mexicanus,species
+324,314,6631,Tamias umbrinus,Tamias umbrinus,Tamias,umbrinus,species
+325,315,6717,Dipodomys,Dipodomys sp.,Dipodomys,sp.,genus
+326,316,6752,Geomys,Geomys sp.,Geomys,sp.,genus
+327,317,6804,Cynomys,Cynomys sp.,Cynomys,sp.,genus
+328,318,6820,Orthogeomys,Orthogeomys sp.,Orthogeomys,sp.,genus
+329,319,6849,Marmota,Marmota sp.,Marmota,sp.,genus
+330,320,6853,Microtus,Microtus sp.,Microtus,sp.,genus
+331,321,6858,Myodes,Myodes sp.,Myodes,sp.,genus
+332,322,6881,Neotoma,Neotoma sp.,Neotoma,sp.,genus
+333,323,6895,Neotominae,Neotominae,Neotominae,NA,family
+334,324,6897,Oryzomys,Oryzomys sp.,Oryzomys,sp.,genus
+335,325,6912,Peromyscus,Peromyscus sp.,Peromyscus,sp.,genus
+336,326,6916,Sciurus,Sciurus sp.,Sciurus,sp.,genus
+337,327,6917,Spermophilus,Spermophilus sp.,Spermophilus,sp.,genus
+338,328,6962,Sigmodon,Sigmodon sp.,Sigmodon,sp.,genus
+339,329,6965,Sorex,Sorex sp.,Sorex,sp.,genus
+340,330,6975,Sylvilagus,Sylvilagus sp.,Sylvilagus,sp.,genus
+341,331,6984,Thomomys,Thomomys sp.,Thomomys,sp.,genus
+342,332,6996,Zapus,Zapus sp.,Zapus,sp.,genus
+343,333,7015,Chaetodipus penicillatus,Chaetodipus penicillatus,Chaetodipus,penicillatus,species
+344,334,7035,Myodes rutilus,Myodes rutilus,Myodes,rutilus,species
+345,335,7038,Arborimus brachyodus,Arborimus brachyodus,Arborimus,brachyodus,species
+346,336,7175,cf. Erethizon dorsata,Erethizon dorsata,Erethizon,dorsata,cf_species
+347,337,7220,cf. Marmota sp.,Marmota sp.,Marmota,sp.,cf_genus
+348,338,7711,Sorex cf. S. palustris,Sorex palustris,Sorex,palustris,cf_species
+349,339,7738,Erethizon dorsata epixanthus,Erethizon dorsata,Erethizon,dorsata,species
+350,340,10063,Lepus arcticus,Lepus arcticus,Lepus,arcticus,species
+351,341,10148,Microtus gregalis,Microtus gregalis,Microtus,gregalis,species
+352,342,13520,cf. Spermophilus parryii,Spermophilus parryii,Spermophilus,parryii,cf_species
+353,343,13627,Sylvilagus cunicularius,Sylvilagus cunicularius,Sylvilagus,cunicularius,species
+354,344,13646,Ochotona whartoni,Ochotona whartoni,Ochotona,whartoni,species
+355,345,14694,Neotoma cf. N. micropus,Neotoma micropus,Neotoma,micropus,cf_species
+356,346,20018,Rodentia (small),Rodentia,Rodentia,NA,order
+357,347,20021,Rodentia (medium/large),Rodentia,Rodentia,NA,order
+358,347,20021,Rodentia (medium/large),Rodentia,Rodentia,NA,order
+359,348,28009,Marmotini,Marmotini,Marmotini,NA,tribe
+360,349,28011,Urocitellus elegans,Urocitellus elegans,Urocitellus,elegans,species
+361,350,35211,Rodentia (very small),Rodentia,Rodentia,NA,order
+362,351,35316,Marmota cf. M. caligata,Marmota caligata,Marmota,caligata,cf_species
+363,352,35346,Lepus cf. L. othus,Lepus othus,Lepus,othus,cf_species
+364,353,41298,Cuniculus paca,Cuniculus paca,Cuniculus,paca,species
+365,354,42159,Coendou mexicanus,Coendou mexicanus,Coendou,mexicanus,species
+366,355,5858,Baiomys taylori,Baiomys taylori,Baiomys,taylori,species
+367,356,5955,Cryptotis sp.,Cryptotis sp.,Cryptotis,sp.,genus
+368,357,6085,Geomys pinetis,Geomys pinetis,Geomys,pinetis,species
+369,358,6204,Microdipodops sp.,Microdipodops sp.,Microdipodops,sp.,genus
+370,359,6366,Pappogeomys sp.,Pappogeomys sp.,Pappogeomys,sp.,genus
+371,360,6378,Perognathus flavus,Perognathus flavus,Perognathus,flavus,species
+372,361,6384,Perognathus merriami,Perognathus merriami,Perognathus,merriami,species
+373,362,6394,Peromyscus californicus,Peromyscus californicus,Peromyscus,californicus,species
+374,363,6409,Peromyscus pectoralis,Peromyscus pectoralis,Peromyscus,pectoralis,species
+375,364,6414,Peromyscus truei,Peromyscus truei,Peromyscus,truei,species
+376,365,6469,Reithrodontomys fulvescens,Reithrodontomys fulvescens,Reithrodontomys,fulvescens,species
+377,366,6529,Sorex longirostris,Sorex longirostris,Sorex,longirostris,species
+378,367,6537,Sorex ornatus,Sorex ornatus,Sorex,ornatus,species
+379,368,6548,Sorex vagrans,Sorex vagrans,Sorex,vagrans,species
+380,369,6553,Spermophilus beldingi/S. elegans,Spermophilus beldingi,Spermophilus,beldingi,species_2
+381,369,6553,Spermophilus beldingi/S. elegans,Spermophilus elegans,Spermophilus,elegans,species_2
+382,370,6612,Talpidae,Talpidae,Talpidae,NA,family
+383,371,6619,Tamias merriami,Tamias merriami,Tamias,merriami,species
+384,372,6662,Thomomys monticola,Thomomys monticola,Thomomys,monticola,species
+385,373,6667,Thomomys townsendii,Thomomys townsendii,Thomomys,townsendii,species
+386,374,6733,Tamias,Tamias sp.,Tamias,sp.,genus
+387,375,6954,Reithrodontomys,Reithrodontomys sp.,Reithrodontomys,sp.,genus
+388,376,6959,Scapanus,Scapanus sp.,Scapanus,sp.,genus
+389,377,7007,Perognathinae,Perognathinae,Perognathinae,NA,family
+390,378,7011,Chaetodipus formosus,Chaetodipus formosus,Chaetodipus,formosus,species
+391,379,7052,Perognathinae sp.,Perognathinae sp.,Perognathinae,sp.,genus
+392,380,7106,cf. Aplodontia sp.,Aplodontia sp.,Aplodontia,sp.,cf_genus
+393,381,7134,cf. Castor sp.,Castor sp.,Castor,sp.,cf_genus
+394,382,7145,cf. Cryptotis sp.,Cryptotis sp.,Cryptotis,sp.,cf_genus
+395,383,7147,cf. Cynomys leucurus,Cynomys leucurus,Cynomys,leucurus,cf_species
+396,384,7160,cf. Dipodomys panamintinus,Dipodomys panamintinus,Dipodomys,panamintinus,cf_species
+397,385,7188,cf. Geomys sp.,Geomys sp.,Geomys,sp.,cf_genus
+398,386,7190,cf. Glaucomys sp.,Glaucomys sp.,Glaucomys,sp.,cf_genus
+399,387,7235,cf. Microtus ochrogaster/M. pinetorum,Microtus ochrogaster,Microtus,ochrogaster,species_2
+400,387,7235,cf. Microtus ochrogaster/M. pinetorum,Microtus pinetorum,Microtus,pinetorum,species_2
+401,388,7273,cf. Neotoma sp.,Neotoma sp.,Neotoma,sp.,cf_genus
+402,389,7306,cf. Perognathus parvus,Perognathus parvus,Perognathus,parvus,cf_species
+403,390,7315,cf. Peromyscus sp.,Peromyscus sp.,Peromyscus,sp.,cf_genus
+404,391,7345,cf. Sigmodon sp.,Sigmodon sp.,Sigmodon,sp.,cf_genus
+405,392,7358,cf. Sorex nanus,Sorex nanus,Sorex,nanus,cf_species
+406,393,7366,cf. Spermophilus beldingi,Spermophilus beldingi,Spermophilus,beldingi,cf_species
+407,394,7370,cf. Spermophilus lateralis,Spermophilus lateralis,Spermophilus,lateralis,cf_species
+408,395,7400,cf. Tamias dorsalis,Tamias dorsalis,Tamias,dorsalis,cf_species
+409,396,7401,cf. Tamias minimus,Tamias minimus,Tamias,minimus,cf_species
+410,397,7404,cf. Tamias umbrinus,Tamias umbrinus,Tamias,umbrinus,cf_species
+411,398,7412,cf. Thomomys bottae,Thomomys bottae,Thomomys,bottae,cf_species
+412,399,7415,cf. Thomomys townsendii,Thomomys townsendii,Thomomys,townsendii,cf_species
+413,400,7488,Neotoma albigula/N. lepida,Neotoma albigula,Neotoma,albigula,species_2
+414,400,7488,Neotoma albigula/N. lepida,Neotoma lepida,Neotoma,lepida,species_2
+415,401,7730,Sciurus niger rufiventer,Sciurus niger,Sciurus,niger,species
+416,402,13886,Neotoma cf. N. lepida,Neotoma lepida,Neotoma,lepida,cf_species
+417,403,14684,Chaetodipus sp.,Chaetodipus sp.,Chaetodipus,sp.,genus
+418,404,14726,Peromyscus cf. P. leucopus,Peromyscus leucopus,Peromyscus,leucopus,cf_species
+419,405,22488,Spermophilus cf. S. lateralis,Spermophilus lateralis,Spermophilus,lateralis,cf_species
+420,406,22663,Peromyscus/Reithrodontomys,Peromyscus sp.,Peromyscus,sp.,genus_2
+421,406,22663,Peromyscus/Reithrodontomys,Reithrodontomys sp.,Reithrodontomys,sp.,genus_2
+422,407,23551,Sciurus/Tamiasciurus,Sciurus sp.,Sciurus,sp.,genus_2
+423,407,23551,Sciurus/Tamiasciurus,Tamiasciurus sp.,Tamiasciurus,sp.,genus_2
+424,408,23641,Sylvilagus cf. S. nuttallii,Sylvilagus nuttallii,Sylvilagus,nuttallii,cf_species
+425,409,24144,Onychomys leucogaster/Chaetodipus hispidus/Perognathus sp./Peromyscus sp.,Onychomys leucogaster,Onychomys,leucogaster,genus_4
+426,409,24144,Onychomys leucogaster/Chaetodipus hispidus/Perognathus sp./Peromyscus sp.,Chaetodipus hispidus,Chaetodipus,hispidus,genus_4
+427,409,24144,Onychomys leucogaster/Chaetodipus hispidus/Perognathus sp./Peromyscus sp.,Perognathus sp.,Perognathus,sp.,genus_4
+428,409,24144,Onychomys leucogaster/Chaetodipus hispidus/Perognathus sp./Peromyscus sp.,Peromyscus sp.,Peromyscus,sp.,genus_4
+429,410,24145,Rodentia undiff.,Rodentia,Rodentia,NA,order
+430,411,37439,Otospermophilus beecheyi,Otospermophilus beecheyi,Otospermophilus,beecheyi,species
+431,412,41635,Baiomys musculus,Baiomys musculus,Baiomys,musculus,species
+432,413,13457,Neotoma (Paraneotoma) sp.,Neotoma (Paraneotoma) sp.,Neotoma,(Paraneotoma),subgenus
+433,414,41750,Oryzomys couesi,Oryzomys couesi,Oryzomys,couesi,species
+434,415,41753,Peromyscus melanophrys,Peromyscus melanophrys,Peromyscus,melanophrys,species
+435,416,22669,Thomomys cf. T. mazama,Thomomys mazama,Thomomys,mazama,cf_species
+436,417,22670,Reithrodontomys cf. R. megalotis,Reithrodontomys megalotis,Reithrodontomys,megalotis,cf_species
+437,418,22671,Myodes cf. M. californicus,Myodes californicus,Myodes,californicus,cf_species
+438,419,22674,cf. Arborimus albipes,Arborimus albipes,Arborimus,albipes,cf_species
+439,420,22675,cf. Scapanus latimanus,Scapanus latimanus,Scapanus,latimanus,cf_species
+440,421,6775,Blarina,Blarina sp.,Blarina,sp.,genus
+441,422,6915,Tamiasciurus,Tamiasciurus sp.,Tamiasciurus,sp.,genus
+442,423,6919,Phenacomys,Phenacomys sp.,Phenacomys,sp.,genus
+443,424,7005,Synaptomys,Synaptomys sp.,Synaptomys,sp.,genus
+444,425,7712,Blarina cf. B. brevicauda,Blarina brevicauda,Blarina,brevicauda,cf_species
+445,426,34794,Microtus cf. M. pennsylvanicus,Microtus pennsylvanicus,Microtus,pennsylvanicus,cf_species
+446,427,35635,Tamias cf. T. striatus,Tamias striatus,Tamias,striatus,cf_species
+447,428,36680,Neotoma cf. N. floridana,Neotoma floridana,Neotoma,floridana,cf_species
+448,429,6399,Peromyscus difficilis,Peromyscus difficilis,Peromyscus,difficilis,species
+449,430,6400,Peromyscus eremicus,Peromyscus eremicus,Peromyscus,eremicus,species
+450,431,6597,Sylvilagus leonensis,Sylvilagus leonensis,Sylvilagus,leonensis,species
+451,432,6536,Sorex nanus,Sorex nanus,Sorex,nanus,species
+452,433,13877,Tamias aff. T. minimus,Tamias minimus,Tamias,minimus,cf_species
+453,434,6306,Neotoma stephensi,Neotoma stephensi,Neotoma,stephensi,species
+454,435,6910,Perognathus,Perognathus sp.,Perognathus,sp.,genus
+455,436,23482,Otospermophilus,Otospermophilus sp.,Otospermophilus,sp.,genus
+456,437,18723,Lemmus trimucronatus,Lemmus trimucronatus,Lemmus,trimucronatus,species
+457,438,5929,Castor sp.,Castor sp.,Castor,sp.,genus
+458,439,5976,Dicrostonyx sp.,Dicrostonyx sp.,Dicrostonyx,sp.,genus
+459,440,6049,Erethizon sp.,Erethizon sp.,Erethizon,sp.,genus
+460,441,6062,Eutamias sp.,Eutamias sp.,Eutamias,sp.,genus
+461,442,6113,Heteromyidae,Heteromyidae,Heteromyidae,NA,family
+462,443,6160,Lepus timidus,Lepus timidus,Lepus,timidus,species
+463,444,6187,Marmota vancouverensis,Marmota vancouverensis,Marmota,vancouverensis,species
+464,445,6215,Microtus mexicanus,Microtus mexicanus,Microtus,mexicanus,species
+465,446,6246,Mus sp.,Mus sp.,Mus,sp.,genus
+466,447,6283,Napaeozapus sp.,Napaeozapus sp.,Napaeozapus,sp.,genus
+467,448,6288,Neochoerus pinckneyi,Neochoerus pinckneyi,Neochoerus,pinckneyi,species
+468,449,6292,Neofiber leonardi,Neofiber leonardi,Neofiber,leonardi,species
+469,450,6305,Neotoma spelaea,Neotoma spelaea,Neotoma,spelaea,species
+470,451,6398,Peromyscus cumberlandensis,Peromyscus cumberlandensis,Peromyscus,cumberlandensis,species
+471,452,6481,Scalopus sp.,Scalopus sp.,Scalopus,sp.,genus
+472,453,6890,Onychomys,Onychomys sp.,Onychomys,sp.,genus
+473,454,7025,Lemmiscus sp.,Lemmiscus sp.,Lemmiscus,sp.,genus
+474,455,7091,Castoroides sp.,Castoroides sp.,Castoroides,sp.,genus
+475,456,7239,cf. Microtus sp.,Microtus sp.,Microtus,sp.,cf_genus
+476,457,7240,cf. Microtus xanthognathus,Microtus xanthognathus,Microtus,xanthognathus,cf_species
+477,458,7433,Cynomys niobrarius,Cynomys niobrarius,Cynomys,niobrarius,species
+478,459,7451,Spermophilus cf. S. tridecemlineatus,Spermophilus tridecemlineatus,Spermophilus,tridecemlineatus,cf_species
+479,460,7466,Neotoma magister,Neotoma magister,Neotoma,magister,species
+480,461,10032,Dipoides sp.,Dipoides sp.,Dipoides,sp.,genus
+481,462,13372,cf. Microtus oeconomus,Microtus oeconomus,Microtus,oeconomus,cf_species
+482,463,13383,Planisorex dixonensis,Planisorex dixonensis,Planisorex,dixonensis,species
+483,464,13387,cf. Planisorex dixonensis,Planisorex dixonensis,Planisorex,dixonensis,cf_species
+484,465,13523,Spermophilus undulatus,Spermophilus undulatus,Spermophilus,undulatus,species
+485,466,13526,?Spermophilus parryii,Spermophilus parryii,Spermophilus,parryii,cf_species
+486,467,13529,?Spermophilus sp.,Spermophilus sp.,Spermophilus,sp.,cf_genus
+487,468,13599,?Leporidae,Leporidae,Leporidae,NA,cf_family
+488,469,13623,?Sylvilagus nuttallii,Sylvilagus nuttallii,Sylvilagus,nuttallii,cf_species
+489,470,13626,cf. Brachylagus idahoensis,Brachylagus idahoensis,Brachylagus,idahoensis,cf_species
+490,471,13670,?Dicrostonyx sp.,Dicrostonyx sp.,Dicrostonyx,sp.,cf_genus
+491,472,13723,cf. Ochotona whartoni,Ochotona whartoni,Ochotona,whartoni,cf_species
+492,473,13824,?Castor sp.,Castor sp.,Castor,sp.,cf_genus
+493,474,14127,?Marmota sp.,Marmota sp.,Marmota,sp.,cf_genus
+494,475,14689,Sylvilagus cf. S. floridanus,Sylvilagus floridanus,Sylvilagus,floridanus,cf_species
+495,476,23907,Sorex cf. S. cinereus,Sorex cinereus,Sorex,cinereus,cf_species
+496,477,23908,Spermophilus cf. S. parryii,Spermophilus parryii,Spermophilus,parryii,cf_species
+497,478,34692,Lepus americanus/Syvilagus floridanus,Lepus americanus,Lepus,americanus,genus_2
+498,478,34692,Lepus americanus/Syvilagus floridanus,Sylvilagus floridanus,Sylvilagus,floridanus,genus_2
+499,479,34795,Spermophilus cf. S. richardsonii,Spermophilus richardsonii,Spermophilus,richardsonii,cf_species
+500,480,35318,Dicrostonyx cf. D. torquatus,Dicrostonyx torquatus,Dicrostonyx,torquatus,cf_species
+501,481,35694,Thomomys cf. T. potomacensis,Thomomys potomacensis,Thomomys,potomacensis,cf_species
+502,482,41731,Cryptotis mayensis,Cryptotis mayensis,Cryptotis,mayensis,species
+503,483,41742,Sciurus deppei,Sciurus deppei,Sciurus,deppei,species
+504,484,41744,Sciurus yucatanensis,Sciurus yucatanensis,Sciurus,yucatanensis,species
+505,485,41757,Peromyscus yucatanicus,Peromyscus yucatanicus,Peromyscus,yucatanicus,species
+506,486,41974,Orthogeomys hispidus,Orthogeomys hispidus,Orthogeomys,hispidus,species
+507,487,41979,Heteromys gaumeri,Heteromys gaumeri,Heteromys,gaumeri,species
+508,488,41993,Ototylomys phyllotis,Ototylomys phyllotis,Ototylomys,phyllotis,species
+509,489,44441,Sylvilagus gabbi,Sylvilagus gabbi,Sylvilagus,gabbi,species
+510,490,5836,Ammospermophilus interpres,Ammospermophilus interpres,Ammospermophilus,interpres,species
+511,491,5855,Aztlanolagus agilis,Aztlanolagus agilis,Aztlanolagus,agilis,species
+512,492,5987,Dipodomys agilis,Dipodomys agilis,Dipodomys,agilis,species
+513,493,5991,Dipodomys elator,Dipodomys elator,Dipodomys,elator,species
+514,494,6004,Dipodomys spectabilis,Dipodomys spectabilis,Dipodomys,spectabilis,species
+515,495,6128,Hydrochoerus holmesi,Hydrochoerus holmesi,Hydrochoerus,holmesi,species
+516,496,6291,Neofiber sp.,Neofiber sp.,Neofiber,sp.,genus
+517,497,6296,Neotoma findleyi,Neotoma findleyi,Neotoma,findleyi,species
+518,498,6303,Neotoma pygmaea,Neotoma pygmaea,Neotoma,pygmaea,species
+519,499,6323,Ochrotomys nuttalli,Ochrotomys nuttalli,Ochrotomys,nuttalli,species
+520,500,6395,Peromyscus cochrani,Peromyscus cochrani,Peromyscus,cochrani,species
+521,501,6402,Peromyscus imperfectus,Peromyscus imperfectus,Peromyscus,imperfectus,species
+522,502,6404,Peromyscus leucopus/P. maniculatus,Peromyscus leucopus,Peromyscus,leucopus,species_2
+523,502,6404,Peromyscus leucopus/P. maniculatus,Peromyscus maniculatus,Peromyscus,maniculatus,species_2
+524,503,6407,Peromyscus nesodytes,Peromyscus nesodytes,Peromyscus,nesodytes,species
+525,504,6410,Peromyscus polionotus,Peromyscus polionotus,Peromyscus,polionotus,species
+526,505,6447,Podomys floridanus,Podomys floridanus,Podomys,floridanus,species
+527,506,6489,Sciurus aberti,Sciurus aberti,Sciurus,aberti,species
+528,507,6535,Sorex monticolus/S. vagrans,Sorex monticolus,Sorex,monticolus,species_2
+529,507,6535,Sorex monticolus/S. vagrans,Sorex vagrans,Sorex,vagrans,species_2
+530,508,6557,Spermophilus elegans,Spermophilus elegans,Spermophilus,elegans,species
+531,509,6565,Spermophilus mohavensis,Spermophilus mohavensis,Spermophilus,mohavensis,species
+532,510,6592,Sylvilagus audubonii/S. floridanus,Sylvilagus audubonii,Sylvilagus,audubonii,species_2
+533,510,6592,Sylvilagus audubonii/S. floridanus,Sylvilagus floridanus,Sylvilagus,floridanus,species_2
+534,511,6601,Sylvilagus transitionalis,Sylvilagus transitionalis,Sylvilagus,transitionalis,species
+535,512,6615,Tamias aristus,Tamias aristus,Tamias,aristus,species
+536,513,6616,Tamias canipes,Tamias canipes,Tamias,canipes,species
+537,514,6622,Tamias panamintinus,Tamias panamintinus,Tamias,panamintinus,species
+538,515,6661,Thomomys microdon,Thomomys microdon,Thomomys,microdon,species
+539,516,6665,Thomomys scudderi,Thomomys scudderi,Thomomys,scudderi,species
+540,517,6669,Thomomys vetus,Thomomys vetus,Thomomys,vetus,species
+541,518,6698,Zapodinae,Zapodinae,Zapodinae,NA,family
+542,519,7009,Chaetodipus californicus,Chaetodipus californicus,Chaetodipus,californicus,species
+543,520,7013,Chaetodipus intermedius,Chaetodipus intermedius,Chaetodipus,intermedius,species
+544,521,7074,?Perognathus flavus,Perognathus flavus,Perognathus,flavus,cf_species
+545,522,7084,?Sylvilagus sp.,Sylvilagus sp.,Sylvilagus,sp.,cf_genus
+546,523,7105,cf. Aplodontia rufa,Aplodontia rufa,Aplodontia,rufa,cf_species
+547,524,7135,cf. Castoroides ohioensis,Castoroides ohioensis,Castoroides,ohioensis,cf_species
+548,525,7162,cf. Dipodomys spectabilis,Dipodomys spectabilis,Dipodomys,spectabilis,cf_species
+549,526,7186,cf. Geomys personatus,Geomys personatus,Geomys,personatus,cf_species
+550,527,7189,cf. Glaucomys sabrinus,Glaucomys sabrinus,Glaucomys,sabrinus,cf_species
+551,528,7191,cf. Glaucomys volans,Glaucomys volans,Glaucomys,volans,cf_species
+552,529,7198,cf. Hydrochoerus holmesi,Hydrochoerus holmesi,Hydrochoerus,holmesi,cf_species
+553,530,7203,cf. Leporidae,Leporidae ,Leporidae,NA,cf_species
+554,531,7227,cf. Microdipodops megacephalus,Microdipodops megacephalus,Microdipodops,megacephalus,cf_species
+555,532,7231,cf. Microtus mexicanus,Microtus mexicanus,Microtus,mexicanus,cf_species
+556,533,7269,cf. Neotoma goldmani,Neotoma goldmani,Neotoma,goldmani,cf_species
+557,534,7272,cf. Neotoma micropus,Neotoma micropus,Neotoma,micropus,cf_species
+558,535,7304,cf. Chaetodipus intermedius,Chaetodipus intermedius,Chaetodipus,intermedius,cf_species
+559,536,7305,cf. Chaetodipus nelsoni,Chaetodipus nelsoni,Chaetodipus,nelsoni,cf_species
+560,537,7307,cf. Peromyscus boylii,Peromyscus boylii,Peromyscus,boylii,cf_species
+561,538,7310,cf. Peromyscus difficilis,Peromyscus difficilis,Peromyscus,difficilis,cf_species
+562,539,7311,cf. Peromyscus eremicus,Peromyscus eremicus,Peromyscus,eremicus,cf_species
+563,540,7318,cf. Phenacomys sp.,Phenacomys sp.,Phenacomys,sp.,cf_genus
+564,541,7330,cf. Reithrodontomys fulvescens,Reithrodontomys fulvescens,Reithrodontomys,fulvescens,cf_species
+565,542,7331,cf. Reithrodontomys humulis,Reithrodontomys humulis,Reithrodontomys,humulis,cf_species
+566,543,7333,cf. Reithrodontomys montanus,Reithrodontomys montanus,Reithrodontomys,montanus,cf_species
+567,544,7361,cf. Sorex tenellus,Sorex tenellus,Sorex,tenellus,cf_species
+568,545,7364,cf. Spermophilus armatus,Spermophilus armatus,Spermophilus,armatus,cf_species
+569,546,7368,cf. Spermophilus elegans,Spermophilus elegans,Spermophilus,elegans,cf_species
+570,547,7371,cf. Spermophilus mexicanus,Spermophilus mexicanus,Spermophilus,mexicanus,cf_species
+571,548,7372,cf. Spermophilus mohavensis,Spermophilus mohavensis,Spermophilus,mohavensis,cf_species
+572,549,7376,cf. Spermophilus tereticaudus,Spermophilus tereticaudus,Spermophilus,tereticaudus,cf_species
+573,550,7427,cf. Zapus hudsonius,Zapus hudsonius,Zapus,hudsonius,cf_species
+574,551,7441,Reithrodontomys megalotis/R. montanus,Reithrodontomys megalotis,Reithrodontomys,megalotis,species_2
+575,551,7441,Reithrodontomys megalotis/R. montanus,Reithrodontomys montanus,Reithrodontomys,montanus,species_2
+576,552,7442,Sorex merriami/S. monticolus,Sorex merriami,Sorex,merriami,species_2
+577,552,7442,Sorex merriami/S. monticolus,Sorex monticolus,Sorex,monticolus,species_2
+578,553,7450,Spermophilus elegans/S. richardsonii,Spermophilus elegans,Spermophilus,elegans,species_2
+579,553,7450,Spermophilus elegans/S. richardsonii,Spermophilus richardsonii,Spermophilus,richardsonii,species_2
+580,554,7496,Ochotona cf. O. princeps,Ochotona princeps,Ochotona,princeps,cf_species
+581,555,7689,Spermophilus tridecemlineatus/S. mexicanus,Spermophilus tridecemlineatus,Spermophilus,tridecemlineatus,species_2
+582,555,7689,Spermophilus tridecemlineatus/S. mexicanus,Spermophilus mexicanus,Spermophilus,mexicanus,species_2
+583,556,7690,Spermophilus tridecemlineatus/S. spilosoma,Spermophilus tridecemlineatus,Spermophilus,tridecemlineatus,species_2
+584,556,7690,Spermophilus tridecemlineatus/S. spilosoma,Spermophilus spilosoma,Spermophilus,spilosoma,species_2
+585,557,7694,Sorex cinereus/S. haydeni,Sorex cinereus,Sorex,cinereus,species_2
+586,557,7694,Sorex cinereus/S. haydeni,Sorex haydeni,Sorex,haydeni,species_2
+587,558,7695,Geomys/Thomomys,Geomys sp.,Geomys,sp.,genus_2
+588,558,7695,Geomys/Thomomys,Thomomys sp.,Thomomys,sp.,genus_2
+589,559,7696,Geomyidae sp.,Geomyidae sp.,Geomyidae,sp.,genus
+590,560,7697,Perognathus flavus/P.flavescens,Perognathus flavus,Perognathus,flavus,species_2
+591,560,7697,Perognathus flavus/P.flavescens,Perognathus flavescens,Perognathus,flavescens,species_2
+592,561,13789,?Synaptomys sp.,Synaptomys sp.,Synaptomys,sp.,cf_genus
+593,562,17063,?Cratogeomys castanops,Cratogeomys castanops,Cratogeomys,castanops,cf_species
+594,563,24722,Marmota cf. M. caligata group,Marmota caligata,Marmota,caligata,cf_species
+595,564,28018,Sorex cf. S. preblei,Sorex preblei,Sorex,preblei,cf_species
+596,565,28019,Sorex cf. S. monticolus,Sorex monticolus,Sorex,monticolus,cf_species
+597,566,14693,Spermophilus cf. S. spilosoma,Spermophilus spilosoma,Spermophilus,spilosoma,cf_species
+598,567,23623,Leporidae cf. Lepus americanus.,Leporidae americanus.,Leporidae,americanus.,cf_species
