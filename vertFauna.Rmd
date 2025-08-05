@@ -221,21 +221,24 @@ poly_vert_datasets <- st_sf(poly_vert_datasets, geometry = st_sfc(polygons, crs 
 
 pal <- colorFactor(palette = "Set1", domain = point_vert_datasets$databasename)
 
+point_vert_datasets = point_vert_datasets %>% dplyr::mutate(link = paste0("<a target='_blank' href='https://data.neotomadb.org/datasets/",datasetid,"'/>",sitename,"</a>"))
+poly_vert_datasets = poly_vert_datasets %>% dplyr::mutate(link = paste0("<a target='_blank' href='https://data.neotomadb.org/datasets/",datasetid,"'/>",sitename,"</a>"))
+
 leaflet() %>%
   addTiles() %>%
-  addCircleMarkers(data=point_vert_datasets,
-                   fillColor=~pal(databasename),
-                   stroke=FALSE,
-                   radius=3,
-                   fillOpacity=0.5,
-                   popup = ~sitename) %>%
-  addPolygons(data=poly_vert_datasets,
+    addPolygons(data=poly_vert_datasets,
               fillColor=~pal(databasename),
               color=~pal(databasename),
               weight=2,
               opacity=0.5,
               fillOpacity=0.5,
-              popup = ~sitename) %>%
+              popup = ~link) %>%
+  addCircleMarkers(data=point_vert_datasets,
+                   fillColor=~pal(databasename),
+                   stroke=FALSE,
+                   radius=3,
+                   fillOpacity=0.5,
+                   popup = ~link) %>%
    addLegend("bottomright", 
             pal = pal, 
             values = point_vert_datasets$databasename,
@@ -320,8 +323,6 @@ all_distinct_chrons %>% group_by(agetype) %>% count() %>% datatable(rownames=FAL
 
 ```
 
-I'm assuming that if it's older than Holocene, it's definitely Pleistocene. But there may be datasets older than Pleistocene.
-
 ```{r anothnew}
 
 all_distinct_chrons_mut = all_distinct_chrons %>% 
@@ -339,19 +340,28 @@ all_distinct_chrons_mut = all_distinct_chrons %>%
     TRUE ~ agetype
   ))
 
-adc = all_distinct_chrons_mut %>% left_join(vert_datasets, by=join_by(datasetid))
+adc = all_distinct_chrons_mut %>% left_join(vert_datasets, by=join_by(datasetid)) %>% dplyr::mutate(older = as.numeric(older),younger=as.numeric(younger))
 
 adc = adc %>% dplyr::mutate(period = case_when(
   older < 11625 ~ "Holocene",
-  older >= 11625 & younger <= 11625 ~ "transition",
-  younger > 11625 ~ "Pleistocene"
+  older >= 11625 & younger <= 11625 ~ "Holo/Pleisto",
+  younger > 11625 & younger <= 2580000 & older > 11625 & older <= 2580000 ~ "Pleistocene",
+  older >= 2580000 & younger <= 2580000 ~ "Pleisto-Plio",
+  younger > 2580000 & younger <= 5333000 & older > 2580000 & older <= 5333000 ~ "Pliocene",
+  older >= 5333000 & younger <= 5333000 ~ "Plio-Mio",
+  younger > 5333000 & younger <= 23030000 & older > 5333000 & older <= 23030000 ~ "Miocene",
 ))
 
-adc$period <- factor(adc$period, levels = c("Holocene", "transition", "Pleistocene"))
+adc$period <- factor(adc$period, levels = c("Holocene", "Holo/Pleisto", "Pleistocene","Pleisto-Plio","Pliocene","Plio-Mio","Miocene"))
 
-adc = adc %>% dplyr::filter(!is.na(period))
+adc$databasename = factor(adc$databasename, levels = rev(c(NA,"FAUNMAP","Neotoma Midden Database","Alaskan Archaeofaunas","Neotoma","Faunal Isotope Database","PaleoVertebrates of Latin America","NDSU Insect Database")))
+
+adc = adc %>% dplyr::filter(!is.na(period)) %>%
+  group_by(period,databasename) %>% count() %>% arrange(desc(n))
+
 ggplot(data=adc) +
-  geom_bar(mapping=aes(x=period,fill=databasename)) +
+  geom_col(mapping=aes(x=period,y=n,fill=databasename)) +
+  labs(y="Number of Records") +
   theme_bw()
 
 ```
@@ -389,7 +399,7 @@ ggplot(all_distinct_chrons_mut) +
   geom_segment(mapping=aes(x=log(younger,base=10),xend=log(older,base=10),y=index,yend=index,color=databasename),linewidth=0.1) +
   #geom_point(mapping=aes(x=log(younger),y=index),color='red') +
   #geom_point(mapping=aes(x=log(older),y=index),color='red') +
-  labs(x = "Calibrated Radiocarbon Years") +
+  labs(x = "Years BP") +
   scale_x_continuous(breaks = c(1, 3, 5,7), labels = c("10^1", "10^3","10^5","10^7"),limits=c(-1,7.2)) +
   guides(color = guide_legend(override.aes = list(
     linetype = 1,   # No line
@@ -426,7 +436,7 @@ dcc = dcc %>% dplyr::mutate(modyounger = log(younger,base=10)) %>% dplyr::mutate
 
 ggplot(dcc) +
   geom_segment(mapping=aes(x=modyounger,xend=modolder,y=index2,yend=index2,color=databasename),linewidth=0.1) + 
-  labs(x = "Calibrated Radiocarbon Years") +
+  labs(x = "Years BP") +
   scale_x_continuous(breaks = c(1, 3, 5,7), labels = c("10^1", "10^3", "10^5","10^7"),limits=c(-1,7.2)) +
   guides(color = guide_legend(override.aes = list(
     linetype = 1,   # No line
@@ -713,22 +723,26 @@ mochro_point = point_vert_datasets %>% dplyr::left_join(all_dat_df) %>% dplyr::f
 
 mochro_poly  = poly_vert_datasets %>% dplyr::left_join(all_dat_df) %>% dplyr::filter(variablename==name) %>% distinct(datasetid,.keep_all = TRUE)
 
+
+mochro_point = mochro_point %>% dplyr::mutate(link = paste0("<a target='_blank' href='https://data.neotomadb.org/datasets/",datasetid,"'/>",sitename,"</a>"))
+mochro_poly = mochro_poly %>% dplyr::mutate(link = paste0("<a target='_blank' href='https://data.neotomadb.org/datasets/",datasetid,"'/>",sitename,"</a>"))
+
 leg_names = mochro_point %>% select(databasename) %>% rbind(mochro_poly %>% select(databasename))
 graph = leaflet() %>%
     addTiles() %>%
-    addCircleMarkers(data=mochro_point,
-                     fillColor=~pal(databasename),
-                     stroke=FALSE,
-                     radius=3,
-                   fillOpacity=0.8,
-                   popup = ~sitename) %>%
     addPolygons(data=mochro_poly,
                 fillColor=~pal(databasename),
                 color=~pal(databasename),
                 weight=2,
                    fillOpacity=0.8,
                 opacity=0.8,
-                   popup = ~sitename) %>%
+                   popup = ~link) %>%
+    addCircleMarkers(data=mochro_point,
+                     fillColor=~pal(databasename),
+                     stroke=FALSE,
+                     radius=3,
+                   fillOpacity=0.8,
+                   popup = ~link)  %>%
     addLegend("bottomright", 
               pal = pal, 
               values = leg_names$databasename,
