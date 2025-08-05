@@ -611,8 +611,10 @@ ggplot(vdf) +
   guides(color = guide_legend(override.aes = list(
     linetype = 1,   # No line
     shape = 16,     # Solid circle
-    linewidth = 5 # Dot size
+    size=2,
+    alpha = 1 # Dot size
   ))) 
+
 
 
 ```
@@ -629,7 +631,8 @@ ggplot(vdf) +
   guides(color = guide_legend(override.aes = list(
     linetype = 1,   # No line
     shape = 16,     # Solid circle
-    linewidth = 5 # Dot size
+    size=2,
+    alpha = 1 # Dot size
   ))) 
 
 ```
@@ -753,4 +756,4 @@ for (i in seq_along(taxa_names)) {
 }
 ```
 
-
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
