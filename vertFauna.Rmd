@@ -226,11 +226,16 @@ leaflet() %>%
   addCircleMarkers(data=point_vert_datasets,
                    fillColor=~pal(databasename),
                    stroke=FALSE,
-                   radius=3) %>%
+                   radius=3,
+                   fillOpacity=0.5,
+                   popup = ~sitename) %>%
   addPolygons(data=poly_vert_datasets,
               fillColor=~pal(databasename),
               color=~pal(databasename),
-              weight=2) %>%
+              weight=2,
+              opacity=0.5,
+              fillOpacity=0.5,
+              popup = ~sitename) %>%
    addLegend("bottomright", 
             pal = pal, 
             values = point_vert_datasets$databasename,
@@ -714,11 +719,16 @@ graph = leaflet() %>%
     addCircleMarkers(data=mochro_point,
                      fillColor=~pal(databasename),
                      stroke=FALSE,
-                     radius=3) %>%
+                     radius=3,
+                   fillOpacity=0.8,
+                   popup = ~sitename) %>%
     addPolygons(data=mochro_poly,
                 fillColor=~pal(databasename),
                 color=~pal(databasename),
-                weight=2) %>%
+                weight=2,
+                   fillOpacity=0.8,
+                opacity=0.8,
+                   popup = ~sitename) %>%
     addLegend("bottomright", 
               pal = pal, 
               values = leg_names$databasename,
