@@ -714,7 +714,27 @@ ggplotly(time_vdf, tooltip="text")
 
 ## Taxonomic Coverage {.tabset}
 
-Below are maps of two key species from every order of mammals. I call this taxonomic coverage, but it could also be interesting to see which kinds of taxa are most represented by, say, order.
+Below are maps of two key species from every order of mammals. The following orders are not represented:
+
+* Primates (except for <i>Homo</i>)
+* Diprotodonts (no Australian sites)
+* Dasyuromorphs (no Australian sites)
+* Peramelemorphs (no Australian sites)
+* Afrosoricida (no African sites)
+* Macroscelidea (no African sites)
+* Scandentia (no southeast Asian sites)
+* Paucituberculata (few South American sites)
+* Pholidota - (few subtropical African and Asian sites)
+* Hyracoidea
+* Monotremes
+* Dermoptera
+* Notoryctemorphia
+* Microbiotheria
+* Tubulidentata
+
+I also didn't consider extinct orders. I think <i>Psittacotherium multifragum</i> may be from an extinct order.
+
+I call this taxonomic coverage, but it could also be interesting to see which kinds of taxa are most represented by, say, order.
 
 ```{r mammal-maps}
 #pbdb = content(GET("https://paleobiodb.org/data1.2/occs/list.txt?rowcount&base_name=Primates"))
@@ -769,8 +789,6 @@ taxa_names=c("Microtus ochrogaster","Marmota flaviventris",
 "Brachylagus idahoensis",
 "Equus caballus",
 "Tapirus veroensis",
-"Holmesina septentrionalis",
-"Megalonyx jeffersonii",
 "Mammut americanum",
 "Mammuthus sp.",
 "Didelphis virginiana",
@@ -778,7 +796,9 @@ taxa_names=c("Microtus ochrogaster","Marmota flaviventris",
 "Trichechus manatus",
 "Trichechidae",
 "Glyptotherium texanum",
-"Dasypus bellus")
+"Dasypus bellus",
+"Megalonyx jeffersonii",
+"Megalonyx leptostomus")
 orders=c("Rodents","Rodents",
          "Bats", "Bats",
          "Eulipotyphla","Eulipotyphla",
@@ -786,11 +806,12 @@ orders=c("Rodents","Rodents",
          "Carnivorans","Carnivorans",
          "Lagomorphs","Lagomorphs",
          "Perissodactyls","Perissodactyls",
-         "Pilosa","Pilosa",
          "Proboscideans","Proboscideans",
          "Didelphimorphs", "Didelphimorphs",
          "Sirens","Sirens",
-         "Cingulates","Cingulates")
+         "Cingulates","Cingulates",
+         "Pilosa",
+         "Pilosa")
 
 
 map_list <- list()
