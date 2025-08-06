@@ -26,6 +26,10 @@ display: none;
 display: grid;
 grid-template-columns: 1fr 10fr;
 }
+
+#mammals .leaflet {
+  height: 700px !important ;
+}
 </style>
 
 ```{r, results='asis', echo = F}
@@ -742,7 +746,7 @@ I also didn't consider extinct orders. I think <i>Psittacotherium multifragum</i
 
 I call this taxonomic coverage, but it could also be interesting to see which kinds of taxa are most represented by, say, order.
 
-<div class="newgrid">
+<div class="newgrid" id="mammals">
 ```{r mammal-maps}
 #pbdb = content(GET("https://paleobiodb.org/data1.2/occs/list.txt?rowcount&base_name=Primates"))
 
@@ -859,7 +863,7 @@ graph = leaflet() %>%
               title = "Database Name",
               opacity = 1)
 
-title_html <- paste0("<h2>",order,": ",name,"</h2>")
+title_html <- paste0("<h2>",name,"</h2>")
 
 graph <- graph %>%
       addControl(html = title_html, position = "topright")
