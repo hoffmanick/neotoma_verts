@@ -14,11 +14,17 @@ output:
 
 .nav {
 display: grid;
-grid-template-columns: 1fr 1fr 1fr 1fr;
+grid-template-columns: 1fr 1fr 1fr;
 }
 
 .nav:before {
 display: none;
+}
+
+.newgrid {
+
+display: grid;
+grid-template-columns: 1fr 10fr;
 }
 </style>
 
@@ -724,7 +730,7 @@ Below are maps of two key species from every order of mammals. The following ord
 * Macroscelidea (no African sites)
 * Scandentia (no southeast Asian sites)
 * Paucituberculata (few South American sites)
-* Pholidota - (few subtropical African and Asian sites)
+* Pholidota (few subtropical African and Asian sites)
 * Hyracoidea
 * Monotremes
 * Dermoptera
@@ -736,6 +742,7 @@ I also didn't consider extinct orders. I think <i>Psittacotherium multifragum</i
 
 I call this taxonomic coverage, but it could also be interesting to see which kinds of taxa are most represented by, say, order.
 
+<div class="newgrid">
 ```{r mammal-maps}
 #pbdb = content(GET("https://paleobiodb.org/data1.2/occs/list.txt?rowcount&base_name=Primates"))
 
@@ -882,5 +889,6 @@ for (i in seq_along(taxa_names)) {
   print(out)
 }
 ```
+</div>
 
 <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
