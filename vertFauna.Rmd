@@ -499,7 +499,7 @@ Should I interpret the values below as AD?
 
 ```{r weirods}
 
-dcc %>% dplyr::filter(older <= -75 | younger < -75) %>% datatable(rownames=FALSE)
+dcc %>% dplyr::filter(older <= -75 | younger < -75) %>% select(chroncontrolid,chronologyid,age,agelimityounger,agelimitolder,databasename) %>% datatable(rownames=FALSE)
 
 ```
 
