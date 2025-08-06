@@ -733,25 +733,25 @@ Below are maps of two key species from every order of mammals. I call this taxon
 #Primates
 ## Homo sapiens
 #Diprotodonts
-#Didelphimorphs
-##  Didelphis virginiana
+## Primarily Australia
 #Dasyuromorphs
+## Primarily Australia
 #Afrosoricida
-#Cingulata
-##  Dasypus bellus 
+## Africa
 #Macroscelidea
+## Africa
 #Peramelemorphs
-#Perissodactyls
-#Pilosa
+## Australia
 #Scandentia
+## southeast Asia
 #Paucituberculata
-#Pholidota
+## South America
+#Pholidota - pangolins
+## subtropical Africa and Asia
 #Hyracoidea
 #Monotremes
-#Sirens
-#Proboscideans
-##  Mammut americanum
 #Dermoptera
+##  Psittacotherium multifragum
 #Notoryctemorphia
 #Microbiotheria
 #Tubulidentata
@@ -766,8 +766,31 @@ taxa_names=c("Microtus ochrogaster","Marmota flaviventris",
 "Urocyon cinereoargenteus",
 "Taxidea taxus",
 "Sylvilagus floridanus",
-"Brachylagus idahoensis")
-orders=c("Rodents","Rodents", "Bats", "Bats","Eulipotyphla","Eulipotyphla","Artiodactyls","Artiodactyls","Carnivorans","Carnivorans","Lagomorphs","Lagomorphs")
+"Brachylagus idahoensis",
+"Equus caballus",
+"Tapirus veroensis",
+"Holmesina septentrionalis",
+"Megalonyx jeffersonii",
+"Mammut americanum",
+"Mammuthus sp.",
+"Didelphis virginiana",
+"Didelphis marsupialis",
+"Trichechus manatus",
+"Trichechidae",
+"Glyptotherium texanum",
+"Dasypus bellus")
+orders=c("Rodents","Rodents",
+         "Bats", "Bats",
+         "Eulipotyphla","Eulipotyphla",
+         "Artiodactyls","Artiodactyls",
+         "Carnivorans","Carnivorans",
+         "Lagomorphs","Lagomorphs",
+         "Perissodactyls","Perissodactyls",
+         "Pilosa","Pilosa",
+         "Proboscideans","Proboscideans",
+         "Didelphimorphs", "Didelphimorphs",
+         "Sirens","Sirens",
+         "Cingulates","Cingulates")
 
 
 map_list <- list()
