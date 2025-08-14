@@ -42,7 +42,11 @@ cat(paste0("<style>",
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning=FALSE,message=FALSE)
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
 ```
 
 ```{r libraries}
@@ -60,7 +64,7 @@ library(plotly)
 ```{r download-tables}
 
 
-tables = c("sites","datasets","collectionunits","datasetdatabases","constituentdatabases","datasettypes","analysisunits","chroncontrols","agetypes")
+tables = c("sites","datasets","collectionunits","datasetdatabases","constituentdatabases","datasettypes","analysisunits","chroncontrols","agetypes","sampleages","samples")
 
 for (q in seq(length(tables))) {
 tablename=tables[q]
@@ -200,9 +204,11 @@ names(chron_df) = c("agetype","modelType","chronologyid","datePrepared","chronol
 ## 1560 syverson-blois bounds and 1560 events
 ## 1358 faunmap 2.1
 
+
+num_datasets = length(vert_datasets[[1]])
 ```
 
-Below is a map of all the sites in Neotoma where vertebrate datasets are, colored by the constituent database to which they correspond.
+There are `r num_datasets` vertebrate fauna datasets in Neotoma. Below is a map of all the sites in Neotoma corresponding to these datasets, colored by the constituent database to which they correspond.
 
 ```{r pressure, echo=FALSE}
 
@@ -260,35 +266,68 @@ leaflet() %>%
 ```
 
 
-You may be wondering which datasets are associated with the insect database or which are associated with an NA database. These are:
+The datasets associated with the insect database or which associated with no database (i.e., NA) are:
 
 ```{r na-and-ndsu}
 
 
-vert_datasets %>% dplyr::filter(databaseid %in% c(NA,14)) %>% select(datasetid,collectionunitid,siteid,sitename,databasename) %>% datatable(rownames=FALSE)
+vert_datasets %>% dplyr::filter(databaseid %in% c(NA,14)) %>% select(datasetid,collectionunitid,siteid,sitename,databasename) %>% datatable(rownames=FALSE,options = list(pageLength = 12))
+
+
 ```
 
 ## Spatial Precision ?
 
 # Time
 
-## Temporal Coverage
+## Chronologies
 
-I selected chronologies for any given dataset. If a dataset only had a single chronology, I chose that. For the rest, this was the order of preference:
-
-* Syverson-Blois bounds
-* FAUNMAP 2.1
-* Calibrated
-* Neotoma 2
-* FAUNMAP 1.1
-
-For the remaining 23 datasets, I chose a chronology randomly. I used the reliableagespan values associated with this [API](https://api.neotomadb.org/v2.0/data/datasets/100/chronologies) to get older and younger bounds associated with a dataset. Four of the FAUNMAP 1.1 datasets (IDs = 6450,6861,6972,7833) had NA older and younger bounds, so I removed those. 
-
-Below is a table of the ages of the chronologies I chose.
 
 
 ```{r chroncount}
 ##datasetid 24742 has duplicate faunmap 2.1 chronology
+
+agetype_wide = chron_df %>% group_by(datasetid,agetype) %>% summarize() %>% mutate(present = 1) %>% pivot_wider(id_cols=datasetid,names_from=agetype,values_from=present,values_fill=0)
+
+only_rc = agetype_wide %>% dplyr::filter(`Radiocarbon years BP` == 1 &
+                                 `Calendar years AD/BC` == 0 &
+                                 `Calibrated radiocarbon years BP` == 0 &
+                                 `Calendar years BP` == 0) %>% dplyr::mutate(status="only radiocarbon")
+
+cal_raw = agetype_wide %>% dplyr::filter(`Radiocarbon years BP` == 1 &
+                                   `Calibrated radiocarbon years BP` == 1)
+
+raw_and = agetype_wide %>% dplyr::filter(`Radiocarbon years BP` == 1 &
+
+                                   `Calendar years BP` == 1) %>%
+  rbind(cal_raw) %>% distinct(datasetid) %>% dplyr::mutate(status="radiocarbon and other")
+
+other_age = agetype_wide %>% dplyr::filter(!datasetid %in% c(raw_and$datasetid,only_rc$datasetid ))
+
+only_bp = other_age %>% dplyr::filter(`Radiocarbon years BP` == 0 &
+                                 `Calendar years AD/BC` == 0 &
+                                 `Calibrated radiocarbon years BP` == 0 &
+                                 `Calendar years BP` == 1)  %>% dplyr::mutate(status="only calendar BP")
+
+only_ad = other_age %>% dplyr::filter(`Radiocarbon years BP` == 0 &
+                                 `Calendar years AD/BC` == 1 &
+                                 `Calibrated radiocarbon years BP` == 0 &
+                                 `Calendar years BP` == 0)  %>% dplyr::mutate(status="only calendar AD")
+
+only_cal = other_age %>% dplyr::filter(`Radiocarbon years BP` == 0 &
+                                 `Calendar years AD/BC` == 0 &
+                                 `Calibrated radiocarbon years BP` == 1 &
+                                 `Calendar years BP` == 0)  %>% dplyr::mutate(status="only calibrated")
+
+
+other_other_age = other_age %>% dplyr::filter(!datasetid %in% c(only_cal$datasetid,only_ad$datasetid,only_bp$datasetid))  %>% dplyr::mutate(status="other")
+
+status_age = only_rc %>% rbind(raw_and) %>% rbind(only_cal) %>% rbind(only_ad) %>% rbind(only_bp) %>% rbind(other_other_age) %>% left_join(datasetdatabases_df,by=join_by(datasetid)) %>% left_join(constituentdatabases_df,by=join_by(databaseid))
+
+
+status_age$status <- factor(status_age$status, levels = c("only radiocarbon", "radiocarbon and other", "only calendar BP","only calibrated","only calendar AD","other"))
+
+
 
 chron_wide = chron_df %>% dplyr::filter(chronologyid !=14943) %>% mutate(present = 1) %>%  pivot_wider(id_cols=datasetid,names_from=chronologyName,values_from = present, values_fill=0)
 
@@ -330,11 +369,45 @@ random_chrons = chron_df %>% dplyr::filter(!datasetid %in% chosen_chrons$dataset
 
 all_distinct_chrons = chosen_chrons %>% rbind(random_chrons)
 
-all_distinct_chrons %>% group_by(agetype) %>% count() %>% datatable(rownames=FALSE)
+num_only_rc = length(only_rc[[1]])
+
+num_raw_and = length(raw_and[[1]])
 
 ```
 
-```{r anothnew}
+
+Of the `r num_datasets` vertebrate fauna datasets in Neotoma, there are a plurality, `r num_only_rc` datasets, which only have a chronology in raw radiocarbon years. There are another `r num_raw_and` which have both a raw radiocarbon chronology and a calibrated chronology (almost all of these are "Calibrated Radiocarbon Years"; three are "Calendar Years BP").
+
+
+
+```{r addchron}
+
+
+ggplot(status_age) +
+  geom_bar(mapping=aes(x=status,fill=databasename)) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+
+```
+
+## Coverage
+
+To determine temporal coverage of the vertebrate fauna datasets, I had to select chronologies for each dataset. If a dataset only had a single chronology, I chose that. For the rest, this was the order of preference:
+
+* Syverson-Blois bounds
+* FAUNMAP 2.1
+* Calibrated
+* Neotoma 2
+* FAUNMAP 1.1
+
+For the remaining 23 datasets, I chose a chronology randomly. I used the reliableagespan values associated with this [API](https://api.neotomadb.org/v2.0/data/datasets/100/chronologies) to get older and younger bounds associated with a dataset. Four of the FAUNMAP 1.1 datasets (IDs = 6450,6861,6972,7833) had NA older and younger bounds, so I removed those. 
+
+Below is a table of the ages of the chronologies I chose.
+
+
+``` {r howcover}
+all_distinct_chrons %>% group_by(chronologyName, agetype) %>% count() %>% arrange(desc(n)) %>% datatable(rownames=FALSE)
+
 
 all_distinct_chrons_mut = all_distinct_chrons %>% 
   dplyr::mutate(older=as.numeric(older),younger=as.numeric(younger)) %>%
@@ -363,6 +436,17 @@ adc = adc %>% dplyr::mutate(period = case_when(
   younger > 5333000 & younger <= 23030000 & older > 5333000 & older <= 23030000 ~ "Miocene",
 ))
 
+num_hol = adc %>% dplyr::filter(period=="Holocene") %>% count()
+num_hol = num_hol[[1]]
+
+num_holpl = adc %>% dplyr::filter(period=="Holo/Pleisto") %>% count()
+num_holpl = num_holpl[[1]]
+```
+
+Given these chronologies, we found that most datasets (n= `r num_hol`) are from the Holocene epoch, nearly 1000 span the Holocene and Pleistocene, and nearly another 1000 are within the Pleistocene, with fewer further back in time.
+
+```{r anothnew}
+
 adc$period <- factor(adc$period, levels = c("Holocene", "Holo/Pleisto", "Pleistocene","Pleisto-Plio","Pliocene","Plio-Mio","Miocene"))
 
 adc$databasename = factor(adc$databasename, levels = rev(c(NA,"FAUNMAP","Neotoma Midden Database","Alaskan Archaeofaunas","Neotoma","Faunal Isotope Database","PaleoVertebrates of Latin America","NDSU Insect Database")))
@@ -373,13 +457,14 @@ adc = adc %>% dplyr::filter(!is.na(period)) %>%
 ggplot(data=adc) +
   geom_col(mapping=aes(x=period,y=n,fill=databasename)) +
   labs(y="Number of Records") +
-  theme_bw()
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 
 ```
 
 ## Temporal Precision
 
-This graph shows dataset-level temporal precision on a log scale. The x axis says calibrated radiocarbon years but there are a few which are actually in years AD, I need to convert those. And a few which claim to be in years BP but aren't actually... I think all from FID are like that.
+This graph shows dataset-level temporal precision on a log scale. For datasets with an age type of calendar years AD/BC, I converted to BP. There are a few datasets which purport to be in years BP but aren't actually... I think those ones are generally from FID.
 
 ```{r collection-chron}
 
@@ -435,27 +520,52 @@ ds_chron = ggplot(all_distinct_chrons_mut) +
 ggplotly(ds_chron, tooltip="text")
 
 
+adc_stat = all_distinct_chrons_mut %>% left_join(status_age,by=join_by(datasetid)) 
+
+
+ds_chron2 = ggplot(adc_stat) +
+  geom_segment(mapping=aes(x=modyounger,
+                           xend=modolder,
+                           y=index,yend=index,
+                           color=status,
+                           text = paste("datasetID:", datasetid,
+                                 "<br>Older:", older,
+                                 "<br>Younger:", younger)),linewidth=0.1) +
+  #geom_point(mapping=aes(x=log(younger),y=index),color='red') +
+  #geom_point(mapping=aes(x=log(older),y=index),color='red') +
+  labs(x = "Years BP") +
+  scale_x_continuous(breaks = c(1, 3, 5,7), labels = c("10^1", "10^3","10^5","10^7")) +
+  guides(color = guide_legend(override.aes = list(
+    linetype = 1,   # No line
+    shape = 16,     # Solid circle
+    linewidth = 5 # Dot size
+  ))) +
+  theme_bw() +
+  coord_cartesian(xlim = c(-0.5, 7))
+
+ggplotly(ds_chron2, tooltip="text")
+
 
 ```
 
 
-And this graph is log-scale temporal precision of analysis units. I couldn't verify that these were all in years BP because a lot of the agetypeids in the chroncontrols table (n = 41166 total, n=4591 of the distinct chroncontrols associated with vert fauna datasets) are NA.
+And this graph is log-scale temporal precision of sample ages associated with vertebrate fauna datasets. 
 
 
 ```{r analysis-chron}
 
-analy_chron = chroncontrols_df %>% left_join(analysisunits_df,by=join_by(analysisunitid)) %>% left_join(datasets_df,by=join_by(collectionunitid)) %>% left_join(datasettypes_df,by=join_by(datasettypeid)) %>% 
-  left_join(agetypes_df) %>% dplyr::filter(datasettype=="vertebrate fauna")  %>% dplyr::filter(chronologyid %in% all_distinct_chrons_mut$chronologyid) %>% distinct()
-
-distinct_chroncontrols = analy_chron %>% dplyr::distinct(chroncontrolid,.keep_all=TRUE)
+analy_chron = sampleages_df %>% dplyr::filter(chronologyid %in% all_distinct_chrons$chronologyid)
 
 
+samples_abridged = samples_df %>% distinct(sampleid,.keep_all=TRUE)
 
 
-index2 = seq(length(distinct_chroncontrols[[1]]))
 
-dcc = distinct_chroncontrols %>% mutate(older=as.numeric(agelimitolder),younger=as.numeric(agelimityounger)) %>% arrange((older),younger) %>% cbind(index2) %>% left_join(datasetdatabases_df,by=join_by(datasetid)) %>% left_join(constituentdatabases_df,by=join_by(databaseid)) %>% dplyr::filter(!is.na(younger)) %>% dplyr::filter(!is.na(older))
+dcc = analy_chron %>% mutate(older=as.numeric(ageolder),younger=as.numeric(ageyounger)) %>% arrange((older),younger) %>% left_join(samples_abridged,by=join_by(sampleid)) %>% left_join(datasets_df,by=join_by(datasetid)) %>%  left_join(datasetdatabases_df,by=join_by(datasetid)) %>% left_join(constituentdatabases_df,by=join_by(databaseid)) %>% left_join(datasettypes_df,by=join_by(datasettypeid)) %>% dplyr::filter(!is.na(younger)) %>% dplyr::filter(!is.na(older)) %>% dplyr::filter(datasettype=="vertebrate fauna" )
 
+index2 = seq(length(dcc[[1]]))
+
+dcc = dcc %>% cbind(index2)
 
   #geom_point(mapping=aes(x=log(younger),y=index2),color='red',size=0.05) +
   #geom_point(mapping=aes(x=log(older),y=index2),color='red',size=0.05) +
@@ -474,7 +584,7 @@ dcc_p = ggplot(dcc) +
                            y=index2,
                            yend=index2,
                            color=databasename,
-                           text = paste("chroncontrolID:", chroncontrolid,
+                           text = paste("sampleID:", sampleid,
                                  "<br>Older:", older,
                                  "<br>Younger:", younger)),
                alpha=0.4,stroke=NA,linewidth=0.1) + 
@@ -499,22 +609,14 @@ Should I interpret the values below as AD?
 
 ```{r weirods}
 
-dcc %>% dplyr::filter(older <= -75 | younger < -75) %>% select(chroncontrolid,chronologyid,age,agelimityounger,agelimitolder,databasename) %>% datatable(rownames=FALSE)
-
-```
-
-The table below shows all the distinct chroncontrols associated with a single analysisunit. I'm confused about how a single analysis unit could have so many of these.
-
-```{r tablechron}
-distinct_chroncontrols %>% dplyr::filter(analysisunitid==82631) %>% dplyr::select(chroncontrolid,chronologyid,chroncontroltypeid,analysisunitid,collectionunitid,datasetid,agetypeid,age,agelimityounger,agelimitolder) %>% datatable(rownames=FALSE)
-
+dcc %>% dplyr::filter((older <= -75 & younger > older) | younger < -75) %>% select(chronologyid,age,ageyounger,ageolder,databasename) %>% datatable(rownames=FALSE)
 
 ```
 
 
 ## Uploads Over Time
 
-Below you can see when a dataset was originally uploaded to Neotoma, based on the recdatecreated field for the dataset. For any dataset uploaded prior to September 30, 2013, the year will appear as 2013 because that was when the database moved from one platform to postgres, I think.
+Below you can see when a dataset was originally uploaded to Neotoma, based on the recdatecreated field for the dataset. 
 
 ```{r when-published}
 
@@ -630,59 +732,67 @@ names(all_dat_df) = c("datasetid","depth","sampleid","thickness","samplename","i
 
 ## Taxonomic Precision
 
-Following harmonization with Jessica and Val's table, and dropping those taxa which weren't represented in it (n~2300), here is a summary of the precision of the vertebrate fauna data overall:
+I harmonized the data from vertebrate fauna datasets in Neotoma with a table that Val and Jessica made which also described the taxonomic precision of the identification. That table captured 567 of the 2883 taxa described in Neotoma vertebrate fauna datasets (19.67%), and 32,965 of the 78,415 of the observations in the datasets (42.04%). 
+
+Following harmonization with Jessica and Val's table, and dropping those taxa which weren't represented in it, here is a summary of the precision of the vertebrate fauna data overall:
 
 ```{r pre-unk}
 
 
 taxaharm = read.csv('taxon-crosswalk(in).csv') %>% distinct(originalname, .keep_all=TRUE)
 
+
 harmonized = all_dat_df %>% left_join(taxaharm, by=join_by("variablename" == "originalname")) %>% drop_na(correctedname)
 
-harmonized %>% group_by(uncertainty) %>% count() %>% arrange(desc(n)) %>% datatable(rownames=FALSE)
+harmonized %>% group_by(uncertainty) %>% count() %>% arrange(desc(n)) %>% datatable(rownames=FALSE,options = list(pageLength = 12))
 
+## 2534 unmatched taxa from MDD_species 
+## 2491 unmatched taxa from MDD_species
+## 2316 unmatched taxa from Val's and Jessica's table
 ```
 
 I made an uncertainty metric to measure site-level precision. I assigned a certainty score to each rank, such that species = 1, genus = 2, family = 3, and in-between values get half points:
 
 ```{r unc}
 
-unc_tallies = harmonized %>% group_by(datasetid,uncertainty) %>% summarize(tally= sum(as.numeric(value))) %>% pivot_wider(id_cols=datasetid,names_from=uncertainty,values_from=tally,values_fill=0)
+unc_values = c(3.5,2.5,1.5,3,2,2.5,2.5,4,1,1.5,1.5,2.5)
 
-unc_tallies = unc_tallies %>% dplyr::mutate(sum = species+family+genus+genus_2+cf_species+order+species_2+genus_4+tribe+cf_genus+cf_family+subgenus)
+precision = harmonized %>% group_by(uncertainty) %>% count()
 
-unc_values = c(1,3,2,2.5,1.5,4,1.5,2.5,2.5,2.5,3.5,1.5)
+precision = precision$uncertainty
+unc_converter = data.frame(values = unc_values, precision=precision)
 
-unc_converter = data.frame(values = unc_values, precision=names(unc_tallies[2:13]))
 
+datatable(unc_converter,rownames=FALSE,options = list(pageLength = 12))
 
-datatable(unc_converter,rownames=FALSE)
+unc_scores = harmonized %>% group_by(datasetid,variablename,uncertainty) %>% count()  %>% left_join(unc_converter,by=join_by(uncertainty == precision)) %>% ungroup() %>% group_by(datasetid) %>% summarize(score_prenormal =sum(values)) 
+
+unc_total_tallies = harmonized %>% group_by(datasetid,variablename, uncertainty) %>% count()%>% ungroup() %>% group_by(datasetid) %>% count()
+
 ```
 
-Then I multiplied the value (NISP or MNI) of an observation by its uncertainty value, summed them all by site, and divided by the total number of observations at that site. A value of 1 for a site would then mean that all the assignments at that site were to species-precision. I did exclude all observations for which the taxon-harmonization table isn't ready (2300 taxa and more observations). 
+Then I checked at each site how many distinct identifications were made, summed the uncertainty value of those distinct identifications and divided by the total number of distinct identifications to get a site-level uncertainty metric. A value of 1 for a site would then mean that all the distinct identifications at that site were to species-precision. I did exclude all observations for which the taxon-harmonization table isn't ready (2316 taxa; 45,450 observations). 
 
+
+The graph below shows how the uncertainty metric evolves with site-level taxonomic richness. The richest sites tend to have more precise identifications.
+
+The map below shows the spatial distribution of taxonomic richness and uncertainty in separate layers.
 
 ```{r datharm}
 
-calculator = harmonized %>% left_join(unc_converter,by=join_by("uncertainty" == "precision"))
+unc_all = unc_scores %>% left_join(unc_total_tallies,by=join_by(datasetid)) %>% dplyr::mutate(unc_metric=score_prenormal/n)
 
-calc2 = calculator %>% group_by(datasetid,uncertainty) %>% summarize(unc_metric=sum(as.numeric(value)*values)) %>% ungroup() %>% group_by(datasetid) %>% summarize(unc_metric=sum(unc_metric))
+vdf = vert_datasets %>% left_join(unc_all) %>% drop_na(unc_metric)
 
-unc_tallies = unc_tallies %>% left_join(calc2) %>% mutate(unc_metric=unc_metric/sum)
-
-
-vdf = vert_datasets %>% left_join(unc_tallies) %>% drop_na(unc_metric) %>% 
-  dplyr::mutate(link = "<a target='_blank' href='https://data.neotomadb.org/datasets/",datasetid,"'/>",sitename,"</a>")
 
 plot_vdf = ggplot(vdf) +
-  geom_point(mapping=aes(x=log(sum,base=10),
+  geom_point(mapping=aes(x=n,
                          y=unc_metric,color=databasename,
                          text = paste(sitename,
-                                 "<br>Number specimens:", sum,
+                                 "<br>Taxonomic Richness", n,
                                  "<br>Uncertainty:", unc_metric)),alpha=0.4,stroke=NA) +
   theme_bw() +
-  scale_x_continuous(breaks = c(0, 1,2, 3,4,5), labels = c("10^0", "10^1" ,"10^2","10^3","10^4","10^5"),limits=c(-0.2,5)) +
-  labs(x="Species Tally by Site (log 10)") +
+  labs(x="Taxonomic Richness", y="Uncertainty") +
   guides(color = guide_legend(override.aes = list(
     linetype = 1,   # No line
     shape = 16,     # Solid circle
@@ -694,18 +804,83 @@ ggplotly(plot_vdf, tooltip="text")
 
 
 
+
+point_unc = point_vert_datasets %>% left_join(vdf,by=join_by(datasetid)) %>% dplyr::filter(!is.na(unc_metric))
+
+poly_unc = poly_vert_datasets %>% left_join(vdf,by=join_by(datasetid)) %>% dplyr::filter(!is.na(unc_metric))
+
+library(RColorBrewer)
+
+dark_palette <- brewer.pal(9, "YlOrBr")[1:9]
+
+pal_unc <- colorNumeric(palette = dark_palette, domain = c(1,4))
+
+pal_tax_rich = colorNumeric(palette="BuPu", domain=c(1,46))
+
+
+m = leaflet() %>%
+  addTiles() %>%
+    addPolygons(data=poly_unc,
+              fillColor=~pal_unc(unc_metric),
+              color=~pal_unc(unc_metric),
+              weight=2,
+              opacity=0.5,
+              fillOpacity=0.5,
+              popup = ~link,
+            group="Uncertainty") %>%
+  addCircleMarkers(data=point_unc,
+                   fillColor=~pal_unc(unc_metric),
+                   stroke=FALSE,
+                   radius=3,
+                   fillOpacity=0.5,
+                   popup = ~link,
+                   group="Uncertainty") %>%
+    addPolygons(data=poly_unc,
+              fillColor=~pal_tax_rich(n),
+              color=~pal_tax_rich(n),
+              weight=2,
+              opacity=0.5,
+              fillOpacity=0.5,
+              popup = ~link,
+            group="Taxonomic Richness") %>%
+  addCircleMarkers(data=point_unc,
+                   fillColor=~pal_tax_rich(n),
+                   stroke=FALSE,
+                   radius=3,
+                   fillOpacity=0.5,
+                   popup = ~link,
+            group="Taxonomic Richness") %>%
+   addLegend("bottomright", 
+            pal = pal_unc, 
+            values = point_unc$unc_metric,
+            title = "Uncertainty",
+            opacity = 1,
+            group="Uncertainty") %>%
+   addLegend("bottomleft", 
+            pal = pal_tax_rich, 
+            values = point_unc$n,
+            title = "Taxonomic Richness",
+            opacity = 1,
+            group="Taxonomic Richness") %>%
+    addLayersControl(
+    overlayGroups = c("Uncertainty", "Taxonomic Richness"),
+    options = layersControlOptions(collapsed = FALSE)) %>%
+      hideGroup("Taxonomic Richness")
+m
+
+  
 ```
 
-Below is a graph that shows how precision has evolved over time:
+Below is a graph that shows how precision has evolved over time. There's no obvious change over time.
 
 ```{r change-wth-time}
 
-vdf = vert_datasets %>% left_join(unc_tallies) %>% drop_na(unc_metric)
+vdf = vert_datasets %>% left_join(unc_all) %>% drop_na(unc_metric)
 
 time_vdf =ggplot(vdf) +
   geom_point(mapping=aes(x=dataset_date,y=unc_metric,color=databasename,
                          text = paste(sitename,
-                                 "<br>Number specimens:", sum,
+                                 "<br>Taxonomic Richness:", n,
                                  "<br>Uncertainty:", unc_metric)),alpha=0.4,stroke=NA) +
   theme_bw() +
   guides(color = guide_legend(override.aes = list(
@@ -714,9 +889,6 @@ time_vdf =ggplot(vdf) +
     size=2,
     alpha = 1 # Dot size
   ))) 
-
-
-
 ggplotly(time_vdf, tooltip="text")
 
 ```
@@ -743,8 +915,6 @@ Below are maps of two key species from every order of mammals. The following ord
 * Tubulidentata
 
 I also didn't consider extinct orders. I think <i>Psittacotherium multifragum</i> may be from an extinct order.
-
-I call this taxonomic coverage, but it could also be interesting to see which kinds of taxa are most represented by, say, order.
 
 <div class="newgrid" id="mammals">
 ```{r mammal-maps}
@@ -792,13 +962,13 @@ taxa_names=c("Microtus ochrogaster","Marmota flaviventris",
 "Myotis sp.",
 "Scalopus aquaticus",
 "Blarina brevicauda",
-"Sus scrofa",
-"Odocoileus hemionus",
+"Mylohyus fossilis",
+"Camelops",
 "Urocyon cinereoargenteus",
 "Taxidea taxus",
 "Sylvilagus floridanus",
 "Brachylagus idahoensis",
-"Equus caballus",
+"Equus conversidens",
 "Tapirus veroensis",
 "Mammut americanum",
 "Mammuthus sp.",
@@ -809,7 +979,7 @@ taxa_names=c("Microtus ochrogaster","Marmota flaviventris",
 "Glyptotherium texanum",
 "Dasypus bellus",
 "Megalonyx jeffersonii",
-"Megalonyx leptostomus")
+"Paramylodon harlani")
 orders=c("Rodents","Rodents",
          "Bats", "Bats",
          "Eulipotyphla","Eulipotyphla",
@@ -894,5 +1064,113 @@ for (i in seq_along(taxa_names)) {
 }
 ```
 </div>
+
+
+I matched taxa in Neotoma to taxa recoded by the Mammal Diversity Database, in order to get information on order, family, and genus for each identification.
+
+The Mammal Diversity Database won't match taxa starting with ? or cf., or with sp. in the name, or extinct species. For ?, cf., and sp. or spp., I abstracted that from the Neotoma name to aid with the identifications. (I kept the presence or absence of those markers in a new column though, so it's not lost, but I haven't used that information in the below visualizations.)
+
+I ended up matching 52,477 observations out of 78,415, and 1249 out of 2883 taxa. There's a bias toward missing all the extinct species, so you don't see the pilosa or cingulates from the Americas that you might otherwise
+
+For the sake of simplicity, I ignore cf. and sp. in my table below. (But I retain that information in the dataframe.)
+
+The graph below shows the representation among taxa matched to the MMD of the various mammal orders.
+
+And below that, the table shows the number of distinct families, genera, and species represented in Neotoma for each order represented.
+
+The reason that sirenia has two families but fewer genera and species is that only one of the Sirenia observations went to species-precision, while the other two only went to family, so I didn't count those two in the genera and species column. Similarly, proboscideans are not represented in the table but they are in the graph because there were MMD-matched taxa to order-precision for proboscideans, but nothing more precise than that. Of course, Neotoma has a lot of mammut and mammuthus, but those taxa IDs were not matched in the MMD, probably because the MMD seems only to concern itself with extant taxa. 
+
+
+```{r new-cover}
+
+library(stringr)
+
+taxaharm2 = read.csv("Species_Syn_v2.2.csv") %>% distinct(MDD_original_combination,.keep_all=TRUE)
+
+
+harm2 = all_dat_df %>% left_join(taxaharm2,by=join_by("variablename"=="MDD_original_combination")) %>% drop_na(MDD_order)
+
+harm2_na = all_dat_df %>% left_join(taxaharm2,by=join_by("variablename"=="MDD_original_combination")) %>% dplyr::filter(is.na(MDD_order))
+
+all_dat_df = all_dat_df %>% left_join(datasetdatabases_df,by=join_by(datasetid)) %>% left_join(constituentdatabases_df,by=join_by(databaseid))
+
+all_dat_df$variablename15 <- gsub("^(\\?|cf\\.?|\\?\\s*cf\\.?)\\s*", "", all_dat_df$variablename)
+
+all_dat_df = all_dat_df %>% dplyr::mutate(cf_or_q = case_when(variablename15 != variablename ~ 1,TRUE~ 0))
+
+all_dat_df$variablename2 <- gsub("\\s+(sp\\.|spp\\.)$", "", all_dat_df$variablename15) 
+
+all_dat_df = all_dat_df %>% dplyr::mutate(sp_spp = case_when(
+  variablename15 != variablename2 ~ 1,TRUE~ 0))
+
+
+harm3 = all_dat_df %>% left_join(taxaharm2,by=join_by("variablename2"=="MDD_original_combination")) %>% drop_na(MDD_order) %>% select(variablename2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,databasename) %>% dplyr::mutate(certainty="species")
+
+harm3_na = all_dat_df %>% left_join(taxaharm2,by=join_by("variablename2"=="MDD_original_combination")) %>% dplyr::filter(is.na(MDD_order))
+
+harm3_distinct = harm3_na %>% distinct(variablename2)
+
+mdd_genera = taxaharm2 %>% distinct(MDD_genus,.keep_all=TRUE)
+
+harm4 = all_dat_df %>% dplyr::filter(variablename2 %in% harm3_distinct$variablename2) %>% left_join(mdd_genera,by=join_by("variablename2"=="MDD_genus")) %>% drop_na(MDD_order)  %>% dplyr::mutate(MDD_genus = variablename2) %>% select(variablename2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,databasename) %>% dplyr::mutate(certainty="genus")
+
+
+harm4_na = all_dat_df %>% dplyr::filter(variablename2 %in% harm3_distinct$variablename2) %>% left_join(mdd_genera,by=join_by("variablename2"=="MDD_genus")) %>% dplyr::filter(is.na(MDD_order)) 
+
+harm4_distinct = harm4_na %>% distinct(variablename2)
+
+
+mdd_families = taxaharm2 %>% distinct(MDD_family,.keep_all=TRUE)
+
+harm5 = all_dat_df %>% dplyr::filter(variablename2 %in% harm4_distinct$variablename2) %>% left_join(mdd_families,by=join_by("variablename2"=="MDD_family")) %>% drop_na(MDD_order)  %>% dplyr::mutate(MDD_family = variablename2) %>% select(variablename2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,databasename) %>% dplyr::mutate(certainty="family")
+
+
+harm5_na =  all_dat_df %>% dplyr::filter(variablename2 %in% harm4_distinct$variablename2) %>% left_join(mdd_families,by=join_by("variablename2"=="MDD_family")) %>% dplyr::filter(is.na(MDD_order))
+
+harm5_distinct = harm5_na %>% distinct(variablename2)
+
+
+mdd_orders = taxaharm2 %>% distinct(MDD_order,.keep_all=TRUE)
+
+harm6 = all_dat_df %>% dplyr::filter(variablename2 %in% harm5_distinct$variablename2) %>% left_join(mdd_orders,by=join_by("variablename2"=="MDD_order")) %>% drop_na(MDD_species)  %>%
+  dplyr::mutate(MDD_order = variablename2) %>% select(variablename2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,databasename) %>% dplyr::mutate(certainty="order")
+
+
+harm6_na =  all_dat_df %>% dplyr::filter(variablename2 %in% harm5_distinct$variablename2) %>% left_join(mdd_orders,by=join_by("variablename2"=="MDD_order")) %>% dplyr::filter(is.na(MDD_species))
+
+harm6_distinct = harm6_na %>% distinct(variablename2)
+
+
+all_harm = harm3 %>% rbind(harm4) %>% rbind(harm5) %>% rbind(harm6)
+
+
+##1790 unmatched taxa in harm3
+##1634 in harm6
+
+
+all_harm$MDD_order <- factor(all_harm$MDD_order, levels = c("Rodentia", "Carnivora", "Artiodactyla","Lagomorpha","Eulipotyphla","Chiroptera","Perissodactyla","Didelphimorphia","Proboscidea","Cingulata","Pilosa","Sirenia","Primates"))
+
+ggplot(all_harm) +
+  geom_bar(mapping=aes(x=MDD_order,fill=databasename)) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+
+famharm = all_harm %>% group_by(MDD_order) %>% dplyr::filter(certainty != "order") %>% distinct(MDD_family) %>% count() %>% arrange(desc(n))
+
+names(famharm) = c("order","number families")
+
+genharm = all_harm %>% group_by(MDD_order) %>% dplyr::filter(!certainty %in% c("order","family")) %>% distinct(MDD_genus) %>% count() %>% arrange(desc(n))
+
+names(genharm) = c("order","number genera")
+
+
+specharm = all_harm %>% group_by(MDD_order) %>% dplyr::filter(!certainty %in% c("order","family","genus")) %>% distinct(variablename2) %>% count() %>% arrange(desc(n))
+
+names(specharm) = c("order","number species")
+
+famharm %>% left_join(genharm) %>% left_join(specharm) %>% datatable(rownames=FALSE,options = list(pageLength = 12))
+
+```
+
 
 <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
