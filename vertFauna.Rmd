@@ -464,12 +464,12 @@ ggplot(data=adc) +
 
 ## Temporal Precision
 
-This graph shows dataset-level temporal precision on a log scale. For datasets with an age type of calendar years AD/BC, I converted to BP. There are a few datasets which purport to be in years BP but aren't actually... I think those ones are generally from FID.
+These graphs show dataset-level temporal precision. For datasets with an age type of calendar years AD/BC, I converted to BP. The first is colored by database name, and the second is colored by the chronology type.
 
-```{r collection-chron}
+```{r collection-chron,fig.width=11,fig.height=6}
 
 
-index = seq(length(all_distinct_chrons_mut[[1]]))
+index = seq(length(all_distinct_chrons[[1]]))
 
 
 all_distinct_chrons_mut = all_distinct_chrons %>% 
@@ -490,32 +490,39 @@ all_distinct_chrons_mut = all_distinct_chrons %>%
 all_distinct_chrons_mut = all_distinct_chrons_mut %>% mutate(older=as.numeric(older),younger=as.numeric(younger)) %>% arrange((older)) %>% cbind(index) %>% left_join(datasetdatabases_df,by=join_by(datasetid)) %>% left_join(constituentdatabases_df,by=join_by(databaseid))
 
 all_distinct_chrons_mut = all_distinct_chrons_mut %>% 
-  dplyr::mutate(modyounger = case_when(
-   younger >0 ~ log(younger,base=10),
-   younger <=0 ~ -5),
-   modolder = case_when(
-   older >0 ~ log(older,base=10),
-   older <=0 ~ -4),)
+  dplyr::mutate(period = case_when(
+  older < 11625 ~ "Holocene",
+  older >= 200000 & younger <= 200000 ~ "Early Pleistocene",
+  older >= 11625 & younger <= 11625 ~ "Late Pleistocene",
+  younger > 11625 & younger <= 200000 & older > 11625 & older <= 200000 ~ "Late Pleistocene",
+  younger > 200000 & younger <= 2580000 & older > 200000 & older <= 2580000 ~ "Early Pleistocene",
+  older >= 2580000 & younger <= 2580000 ~ "Pliocene",
+  younger > 2580000 & younger <= 5333000 & older > 2580000 & older <= 5333000 ~ "Pliocene",
+  older >= 5333000 & younger <= 5333000 ~ "Pliocene",
+  younger > 5333000 & younger <= 23030000 & older > 5333000 & older <= 23030000 ~ "Pliocene",
+)) %>% dplyr::filter(!is.na(younger))
+
+
+all_distinct_chrons_mut$period <- factor(all_distinct_chrons_mut$period, levels = c("Holocene", "Late Pleistocene", "Early Pleistocene","Pliocene"))
 
 ds_chron = ggplot(all_distinct_chrons_mut) +
-  geom_segment(mapping=aes(x=modyounger,
-                           xend=modolder,
+  geom_segment(mapping=aes(x=younger,
+                           xend=older,
                            y=index,yend=index,
                            color=databasename,
                            text = paste("datasetID:", datasetid,
                                  "<br>Older:", older,
                                  "<br>Younger:", younger)),linewidth=0.1) +
-  #geom_point(mapping=aes(x=log(younger),y=index),color='red') +
-  #geom_point(mapping=aes(x=log(older),y=index),color='red') +
   labs(x = "Years BP") +
-  scale_x_continuous(breaks = c(1, 3, 5,7), labels = c("10^1", "10^3","10^5","10^7")) +
+  scale_x_reverse() +
   guides(color = guide_legend(override.aes = list(
     linetype = 1,   # No line
     shape = 16,     # Solid circle
     linewidth = 5 # Dot size
   ))) +
   theme_bw() +
-  coord_cartesian(xlim = c(-0.5, 7))
+  #coord_cartesian(xlim = c(7,-0.5)) +
+  facet_wrap(~period,scales="free")
 
 ggplotly(ds_chron, tooltip="text")
 
@@ -524,8 +531,8 @@ adc_stat = all_distinct_chrons_mut %>% left_join(status_age,by=join_by(datasetid
 
 
 ds_chron2 = ggplot(adc_stat) +
-  geom_segment(mapping=aes(x=modyounger,
-                           xend=modolder,
+  geom_segment(mapping=aes(x=younger,
+                           xend=older,
                            y=index,yend=index,
                            color=status,
                            text = paste("datasetID:", datasetid,
@@ -534,14 +541,15 @@ ds_chron2 = ggplot(adc_stat) +
   #geom_point(mapping=aes(x=log(younger),y=index),color='red') +
   #geom_point(mapping=aes(x=log(older),y=index),color='red') +
   labs(x = "Years BP") +
-  scale_x_continuous(breaks = c(1, 3, 5,7), labels = c("10^1", "10^3","10^5","10^7")) +
+  scale_x_reverse() +
   guides(color = guide_legend(override.aes = list(
     linetype = 1,   # No line
     shape = 16,     # Solid circle
     linewidth = 5 # Dot size
   ))) +
   theme_bw() +
-  coord_cartesian(xlim = c(-0.5, 7))
+  # coord_cartesian(xlim = c(7,-0.5)) +
+  facet_wrap(~period,scales="free")
 
 ggplotly(ds_chron2, tooltip="text")
 
@@ -549,10 +557,10 @@ ggplotly(ds_chron2, tooltip="text")
 ```
 
 
-And this graph is log-scale temporal precision of sample ages associated with vertebrate fauna datasets. 
+And this graph shows sample-level temporal precision. 
 
 
-```{r analysis-chron}
+```{r analysis-chron,fig.width=11,fig.height=6}
 
 analy_chron = sampleages_df %>% dplyr::filter(chronologyid %in% all_distinct_chrons$chronologyid)
 
@@ -563,24 +571,48 @@ samples_abridged = samples_df %>% distinct(sampleid,.keep_all=TRUE)
 
 dcc = analy_chron %>% mutate(older=as.numeric(ageolder),younger=as.numeric(ageyounger)) %>% arrange((older),younger) %>% left_join(samples_abridged,by=join_by(sampleid)) %>% left_join(datasets_df,by=join_by(datasetid)) %>%  left_join(datasetdatabases_df,by=join_by(datasetid)) %>% left_join(constituentdatabases_df,by=join_by(databaseid)) %>% left_join(datasettypes_df,by=join_by(datasettypeid)) %>% dplyr::filter(!is.na(younger)) %>% dplyr::filter(!is.na(older)) %>% dplyr::filter(datasettype=="vertebrate fauna" )
 
+
+all_distinct_chrons$older = as.numeric(all_distinct_chrons$older)
+all_distinct_chrons$younger = as.numeric(all_distinct_chrons$younger)
+
+dcc = dcc %>% left_join(all_distinct_chrons,by=join_by(chronologyid,older,younger)) %>% distinct(sampleid,.keep_all = TRUE) %>%
+  dplyr::mutate(older = case_when(
+    agetype == "Calendar years AD/BC" ~ 1950 - older,
+    TRUE ~ older
+  )) %>% 
+  dplyr::mutate(younger = case_when(
+    agetype == "Calendar years AD/BC" ~ 1950 - younger,
+    TRUE ~ younger
+  )) %>%
+  dplyr::mutate(agetype = case_when(
+    agetype == "Calendar years AD/BC" ~ "BP mutated",
+    TRUE ~ agetype
+  ))  %>% arrange((older),younger)
+
 index2 = seq(length(dcc[[1]]))
 
 dcc = dcc %>% cbind(index2)
 
-  #geom_point(mapping=aes(x=log(younger),y=index2),color='red',size=0.05) +
-  #geom_point(mapping=aes(x=log(older),y=index2),color='red',size=0.05) +
-
 dcc = dcc %>% 
-  dplyr::mutate(modyounger = case_when(
-   younger >0 ~ log(younger,base=10),
-   younger <=0 ~ -5),
-   modolder = case_when(
-   older >0 ~ log(older,base=10),
-   older <=0 ~ -4),)
+  dplyr::mutate(period = case_when(
+  older < 11625 ~ "Holocene",
+  older >= 200000 & younger <= 200000 ~ "Early Pleistocene",
+  older >= 11625 & younger <= 11625 ~ "Late Pleistocene",
+  younger > 11625 & younger <= 200000 & older > 11625 & older <= 200000 ~ "Late Pleistocene",
+  younger > 200000 & younger <= 2580000 & older > 200000 & older <= 2580000 ~ "Early Pleistocene",
+  older >= 2580000 & younger <= 2580000 ~ "Pliocene",
+  younger > 2580000 & younger <= 5333000 & older > 2580000 & older <= 5333000 ~ "Pliocene",
+  older >= 5333000 & younger <= 5333000 ~ "Pliocene",
+  younger > 5333000 & younger <= 23030000 & older > 5333000 & older <= 23030000 ~ "Pliocene",
+)) %>% dplyr::filter(!is.na(younger))
+
+
+
+dcc$period <- factor(dcc$period, levels = c("Holocene", "Late Pleistocene", "Early Pleistocene","Pliocene"))
 
 dcc_p = ggplot(dcc) +
-  geom_segment(mapping=aes(x=modyounger,
-                           xend=modolder,
+  geom_segment(mapping=aes(x=younger,
+                           xend=older,
                            y=index2,
                            yend=index2,
                            color=databasename,
@@ -589,7 +621,7 @@ dcc_p = ggplot(dcc) +
                                  "<br>Younger:", younger)),
                alpha=0.4,stroke=NA,linewidth=0.1) + 
   labs(x = "Years BP") +
-  scale_x_continuous(breaks = c(1, 3, 5,7), labels = c("10^1", "10^3", "10^5","10^7")) +
+  scale_x_reverse() +
   guides(color = guide_legend(override.aes = list(
     linetype = 1,   # No line
     shape = 16,     # Solid circle
@@ -598,20 +630,14 @@ dcc_p = ggplot(dcc) +
     
   ))) +
   theme_bw() +
-  coord_cartesian(xlim = c(-0.5, 7))
+  # coord_cartesian(xlim = c(7,-0.5)) +
+  facet_wrap(~period,scales="free")
 
 
 ggplotly(dcc_p, tooltip="text")
 
 ```
 
-Should I interpret the values below as AD?
-
-```{r weirods}
-
-dcc %>% dplyr::filter((older <= -75 & younger > older) | younger < -75) %>% select(chronologyid,age,ageyounger,ageolder,databasename) %>% datatable(rownames=FALSE)
-
-```
 
 
 ## Uploads Over Time
@@ -732,7 +758,7 @@ names(all_dat_df) = c("datasetid","depth","sampleid","thickness","samplename","i
 
 ## Taxonomic Precision
 
-I harmonized the data from vertebrate fauna datasets in Neotoma with a table that Val and Jessica made which also described the taxonomic precision of the identification. That table captured 567 of the 2883 taxa described in Neotoma vertebrate fauna datasets (19.67%), and 32,965 of the 78,415 of the observations in the datasets (42.04%). 
+I harmonized the data from vertebrate fauna datasets in Neotoma with a table that Val and Jessica made which also described the taxonomic precision of the identification. That table captured 567 of the 2721 taxa described in Neotoma vertebrate fauna datasets (20.83%), and 32,965 of the 79,069 of the observations in the datasets (41.70%). 
 
 Following harmonization with Jessica and Val's table, and dropping those taxa which weren't represented in it, here is a summary of the precision of the vertebrate fauna data overall:
 
@@ -798,7 +824,8 @@ plot_vdf = ggplot(vdf) +
     shape = 16,     # Solid circle
     size=2,
     alpha = 1 # Dot size
-  ))) 
+  ))) +
+  scale_y_continuous(breaks=c(1,2,3,4),labels=c("Species","Genus","Family","Order"))
 
 ggplotly(plot_vdf, tooltip="text")
 
@@ -888,7 +915,8 @@ time_vdf =ggplot(vdf) +
     shape = 16,     # Solid circle
     size=2,
     alpha = 1 # Dot size
-  ))) 
+  ))) +
+  scale_y_continuous(breaks=c(1,2,3,4),labels=c("Species","Genus","Family","Order"))
 ggplotly(time_vdf, tooltip="text")
 
 ```
@@ -1068,11 +1096,13 @@ for (i in seq_along(taxa_names)) {
 
 I matched taxa in Neotoma to taxa recoded by the Mammal Diversity Database, in order to get information on order, family, and genus for each identification.
 
-The Mammal Diversity Database won't match taxa starting with ? or cf., or with sp. in the name, or extinct species. For ?, cf., and sp. or spp., I abstracted that from the Neotoma name to aid with the identifications. (I kept the presence or absence of those markers in a new column though, so it's not lost, but I haven't used that information in the below visualizations.)
+The Mammal Diversity Database won't match taxa starting with ? or cf., or with sp. in the name. It also won't match names that are cf. with respect to genus or which are two identificatons joined by a slah. I removed those precision markers from the taxa names for the matching process. (I kept the presence or absence of those markers in a new column though, so it's not lost, but I haven't used that information in the below visualizations.)
 
-I ended up matching 52,477 observations out of 78,415, and 1249 out of 2883 taxa. There's a bias toward missing all the extinct species, so you don't see the pilosa or cingulates from the Americas that you might otherwise
+I ended up matching 52,477 observations out of 79,069, and 1325 out of 2721 taxa. There's a bias toward missing all the extinct species, so you don't see the pilosa or cingulates from the Americas that you might otherwise. There are also a few nomenclature issues, some of which are amenable to similar adjustments to the certainty marker edits I did above, and some of which reflect synonymy issues.
 
-For the sake of simplicity, I ignore cf. and sp. in my table below. (But I retain that information in the dataframe.)
+I surveyed 170 of the unmatched names, and I found that about half were unmatched because extinct; about a third were nonmammals, and about 15% were nomenclature issues of one kind or another.
+
+For the sake of simplicity, I ignore cf., sp., etc. in my table below. (But I retain that information in the dataframe.)
 
 The graph below shows the representation among taxa matched to the MMD of the various mammal orders.
 
@@ -1104,48 +1134,69 @@ all_dat_df = all_dat_df %>% dplyr::mutate(sp_spp = case_when(
   variablename15 != variablename2 ~ 1,TRUE~ 0))
 
 
-harm3 = all_dat_df %>% left_join(taxaharm2,by=join_by("variablename2"=="MDD_original_combination")) %>% drop_na(MDD_order) %>% select(variablename2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,databasename) %>% dplyr::mutate(certainty="species")
+harm7 = separate(all_dat_df,variablename2,into=c("var1","var2"),sep="/") %>%
+  mutate(
+    var2 = if_else(
+      str_detect(var2, "^[A-Z]\\."),                               # if var2 starts with "X."
+      str_replace(var2, "^[A-Z]\\.", str_extract(var1, "^[^ ]+")), # replace "X." with first word of var1
+      var2
+    )
+  )
 
-harm3_na = all_dat_df %>% left_join(taxaharm2,by=join_by("variablename2"=="MDD_original_combination")) %>% dplyr::filter(is.na(MDD_order))
+harm71 = harm7 %>% dplyr::select(var1,cf_or_q,sp_spp,databasename)
+names(harm71)[1] = "var2"
+harm72 = harm7 %>% dplyr::select(var2,cf_or_q,sp_spp,databasename)
+harm7 = harm71 %>% rbind(harm72) %>% drop_na(var2)
 
-harm3_distinct = harm3_na %>% distinct(variablename2)
+harm7 = harm7 %>%
+  mutate(
+    cf_species = str_detect(var2, "cf\\. [A-Z]\\."),                          # TRUE if cf. X. is present
+    var2 = str_replace(var2, "cf\\. [A-Z]\\.[ ]?", "")                      # remove cf. X. and the following space
+  )
+
+harm3 = harm7 %>% left_join(taxaharm2,by=join_by("var2"=="MDD_original_combination")) %>% drop_na(MDD_order) %>% select(var2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,cf_species,databasename) %>% dplyr::mutate(certainty="species")
+
+harm3_na = harm7 %>% left_join(taxaharm2,by=join_by("var2"=="MDD_original_combination")) %>% dplyr::filter(is.na(MDD_order))
+
+harm3_distinct = harm3_na %>% distinct(var2)
 
 mdd_genera = taxaharm2 %>% distinct(MDD_genus,.keep_all=TRUE)
 
-harm4 = all_dat_df %>% dplyr::filter(variablename2 %in% harm3_distinct$variablename2) %>% left_join(mdd_genera,by=join_by("variablename2"=="MDD_genus")) %>% drop_na(MDD_order)  %>% dplyr::mutate(MDD_genus = variablename2) %>% select(variablename2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,databasename) %>% dplyr::mutate(certainty="genus")
+harm4 = harm7 %>% dplyr::filter(var2 %in% harm3_distinct$var2) %>% left_join(mdd_genera,by=join_by("var2"=="MDD_genus")) %>% drop_na(MDD_order)  %>% dplyr::mutate(MDD_genus = var2) %>% select(var2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,cf_species,databasename) %>% dplyr::mutate(certainty="genus")
 
 
-harm4_na = all_dat_df %>% dplyr::filter(variablename2 %in% harm3_distinct$variablename2) %>% left_join(mdd_genera,by=join_by("variablename2"=="MDD_genus")) %>% dplyr::filter(is.na(MDD_order)) 
+harm4_na = harm7 %>% dplyr::filter(var2 %in% harm3_distinct$var2) %>% left_join(mdd_genera,by=join_by("var2"=="MDD_genus")) %>% dplyr::filter(is.na(MDD_order)) 
 
-harm4_distinct = harm4_na %>% distinct(variablename2)
+harm4_distinct = harm4_na %>% distinct(var2)
 
 
 mdd_families = taxaharm2 %>% distinct(MDD_family,.keep_all=TRUE)
 
-harm5 = all_dat_df %>% dplyr::filter(variablename2 %in% harm4_distinct$variablename2) %>% left_join(mdd_families,by=join_by("variablename2"=="MDD_family")) %>% drop_na(MDD_order)  %>% dplyr::mutate(MDD_family = variablename2) %>% select(variablename2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,databasename) %>% dplyr::mutate(certainty="family")
+harm5 = harm7 %>% dplyr::filter(var2 %in% harm4_distinct$var2) %>% left_join(mdd_families,by=join_by("var2"=="MDD_family")) %>% drop_na(MDD_order)  %>% dplyr::mutate(MDD_family = var2) %>% select(var2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,cf_species,databasename) %>% dplyr::mutate(certainty="family")
 
 
-harm5_na =  all_dat_df %>% dplyr::filter(variablename2 %in% harm4_distinct$variablename2) %>% left_join(mdd_families,by=join_by("variablename2"=="MDD_family")) %>% dplyr::filter(is.na(MDD_order))
+harm5_na =  harm7 %>% dplyr::filter(var2 %in% harm4_distinct$var2) %>% left_join(mdd_families,by=join_by("var2"=="MDD_family")) %>% dplyr::filter(is.na(MDD_order))
 
-harm5_distinct = harm5_na %>% distinct(variablename2)
+harm5_distinct = harm5_na %>% distinct(var2)
 
 
 mdd_orders = taxaharm2 %>% distinct(MDD_order,.keep_all=TRUE)
 
-harm6 = all_dat_df %>% dplyr::filter(variablename2 %in% harm5_distinct$variablename2) %>% left_join(mdd_orders,by=join_by("variablename2"=="MDD_order")) %>% drop_na(MDD_species)  %>%
-  dplyr::mutate(MDD_order = variablename2) %>% select(variablename2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,databasename) %>% dplyr::mutate(certainty="order")
+harm6 = harm7 %>% dplyr::filter(var2 %in% harm5_distinct$var2) %>% left_join(mdd_orders,by=join_by("var2"=="MDD_order")) %>% drop_na(MDD_species)  %>%
+  dplyr::mutate(MDD_order = var2) %>% select(var2,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,cf_species,databasename) %>% dplyr::mutate(certainty="order")
 
 
-harm6_na =  all_dat_df %>% dplyr::filter(variablename2 %in% harm5_distinct$variablename2) %>% left_join(mdd_orders,by=join_by("variablename2"=="MDD_order")) %>% dplyr::filter(is.na(MDD_species))
+harm6_na =  harm7 %>% dplyr::filter(var2 %in% harm5_distinct$var2) %>% left_join(mdd_orders,by=join_by("var2"=="MDD_order")) %>% dplyr::filter(is.na(MDD_species))
 
-harm6_distinct = harm6_na %>% distinct(variablename2)
+harm6_distinct = harm6_na %>% distinct(var2)
 
 
 all_harm = harm3 %>% rbind(harm4) %>% rbind(harm5) %>% rbind(harm6)
 
 
 ##1790 unmatched taxa in harm3
-##1634 in harm6
+##1634 in harm6 older
+#1396 in harm6 newer
 
 
 all_harm$MDD_order <- factor(all_harm$MDD_order, levels = c("Rodentia", "Carnivora", "Artiodactyla","Lagomorpha","Eulipotyphla","Chiroptera","Perissodactyla","Didelphimorphia","Proboscidea","Cingulata","Pilosa","Sirenia","Primates"))
@@ -1164,7 +1215,7 @@ genharm = all_harm %>% group_by(MDD_order) %>% dplyr::filter(!certainty %in% c("
 names(genharm) = c("order","number genera")
 
 
-specharm = all_harm %>% group_by(MDD_order) %>% dplyr::filter(!certainty %in% c("order","family","genus")) %>% distinct(variablename2) %>% count() %>% arrange(desc(n))
+specharm = all_harm %>% group_by(MDD_order) %>% dplyr::filter(!certainty %in% c("order","family","genus")) %>% distinct(var2) %>% count() %>% arrange(desc(n))
 
 names(specharm) = c("order","number species")
 
