@@ -1108,7 +1108,7 @@ The Mammal Diversity Database won't match taxa starting with ? or cf., or with s
 
 I ended up matching 52,477 observations out of 79,069, and 1325 out of 2721 taxa. There's a bias toward missing all the extinct species, so you don't see the pilosa or cingulates from the Americas that you might otherwise. There are also a few nomenclature issues, some of which are amenable to similar adjustments to the certainty marker edits I did above, and some of which reflect synonymy issues.
 
-I surveyed 170 of the unmatched names, and I found that about half were unmatched because extinct; about a third were nonmammals, and about 15% were nomenclature issues of one kind or another.
+I surveyed 500 of the unmatched names, and I found that about half were unmatched because nonmammal; about a third were extinct mammals, about 10% were nomenclature issues of one kind or another, and the last 5% I couldn't figure out why they didn't match.
 
 For the sake of simplicity, I ignore cf., sp., etc. in my table below. (But I retain that information in the dataframe.)
 
