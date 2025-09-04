@@ -263,6 +263,9 @@ leaflet() %>%
             opacity = 1)
 
 
+num_points = length(point_vert_datasets[[1]])
+num_poly = length(poly_vert_datasets[[1]])
+
 ```
 
 
@@ -276,7 +279,9 @@ vert_datasets %>% dplyr::filter(databaseid %in% c(NA,14)) %>% select(datasetid,c
 
 ```
 
-## Spatial Precision ?
+## Spatial Precision
+
+The spatial precision of Neotoma data refers to how closely a site's location as designated in Neotoma maps on to the site's actual location. `r num_points` of the vertebrate datasets in Neotoma are point locations, while `r num_poly` are bounding boxes. According to the [Neotoma Manual](https://neotoma-manual.readthedocs.io/en/latest/tables_site.html#sites), “the lat-long box can be used either to circumscribe the areal extent of a site or to provide purposeful imprecision to the site location.” In other words, there is an ambiguity inherent to the use of bounding boxes in Neotoma. Some are for designating the full extent of a lake, while others are used for fuzzing the coordinates of sensitive sites. Adding to this confusion is the fact that different constituent databases have historically addressed spatial precision differently. FAUNMAP, which contains most (n=4851) of Neotoma's vertebrate data, has many sites that are designated as points but which actually are fuzzed to some extent. The original FAUNMAP database had metadata on the precision of its sites, but Neotoma no longer does. See this [page section](https://hoffmanick.github.io/eos/neoHomo.html#6_Are_the_coordinates_for_any_sites_in_Neotoma_fuzzed) for an attempt at matching Neotoma's FAUNMAP data to original FAUNMAP precision metadata.
 
 # Time
 
@@ -390,7 +395,7 @@ ggplot(status_age) +
 
 ```
 
-## Coverage
+
 
 To determine temporal coverage of the vertebrate fauna datasets, I had to select chronologies for each dataset. If a dataset only had a single chronology, I chose that. For the rest, this was the order of preference:
 
@@ -442,6 +447,8 @@ num_hol = num_hol[[1]]
 num_holpl = adc %>% dplyr::filter(period=="Holo/Pleisto") %>% count()
 num_holpl = num_holpl[[1]]
 ```
+
+## Coverage
 
 Given these chronologies, we found that most datasets (n= `r num_hol`) are from the Holocene epoch, nearly 1000 span the Holocene and Pleistocene, and nearly another 1000 are within the Pleistocene, with fewer further back in time.
 
@@ -788,9 +795,10 @@ precision = harmonized %>% group_by(uncertainty) %>% count()
 precision = precision$uncertainty
 unc_converter = data.frame(values = unc_values, precision=precision)
 
-
-datatable(unc_converter,rownames=FALSE,options = list(pageLength = 12))
-
+unc_converter = unc_converter %>% arrange(desc(values))
+datatable(unc_converter,rownames=FALSE, options = list(
+    pageLength = 12
+  ))
 unc_scores = harmonized %>% group_by(datasetid,variablename,uncertainty) %>% count()  %>% left_join(unc_converter,by=join_by(uncertainty == precision)) %>% ungroup() %>% group_by(datasetid) %>% summarize(score_prenormal =sum(values)) 
 
 unc_total_tallies = harmonized %>% group_by(datasetid,variablename, uncertainty) %>% count()%>% ungroup() %>% group_by(datasetid) %>% count()
