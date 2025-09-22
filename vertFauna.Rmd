@@ -777,8 +777,10 @@ names(n_datasets)[[4]] = "rank"
 
 ggplot(n_datasets) +
   geom_line(mapping=aes(x=rank,y=log(n))) +
-  theme_bw()
+  theme_bw() +
+  labs(x="Taxonomic Abundance Ranking", y="Number of IDs (logarithmic)")
 ```
+
 ## Taxonomic Precision
 
 I harmonized the data from vertebrate fauna datasets in Neotoma with a table that Val and Jessica made which also described the taxonomic precision of the identification. That table captured 567 of the 2721 taxa described in Neotoma vertebrate fauna datasets (20.83%), and 32,965 of the 79,069 of the observations in the datasets (41.70%). 
