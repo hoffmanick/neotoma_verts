@@ -763,6 +763,22 @@ names(all_dat_df) = c("datasetid","depth","sampleid","thickness","samplename","i
 
 # Taxonomy 
 
+The below table shows all the taxa observed in vertebrate fauna datasets ranked by the number of datasets in which they occur. The graph below that is a rank-abundance curve.
+
+```{r ranks}
+
+n_datasets = all_dat_df %>%  distinct(taxonid,variablename,datasetid) %>% group_by(taxonid,variablename) %>% count() %>% arrange(desc(n))
+
+datatable(n_datasets,rownames=FALSE)
+rank = seq(length(n_datasets[[1]]))
+
+n_datasets = n_datasets %>% cbind(rank)
+names(n_datasets)[[4]] = "rank"
+
+ggplot(n_datasets) +
+  geom_line(mapping=aes(x=rank,y=log(n))) +
+  theme_bw()
+```
 ## Taxonomic Precision
 
 I harmonized the data from vertebrate fauna datasets in Neotoma with a table that Val and Jessica made which also described the taxonomic precision of the identification. That table captured 567 of the 2721 taxa described in Neotoma vertebrate fauna datasets (20.83%), and 32,965 of the 79,069 of the observations in the datasets (41.70%). 

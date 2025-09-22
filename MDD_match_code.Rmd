@@ -1,0 +1,299 @@
+
+First, download the relevant libraries
+```{r libs, message=FALSE}
+
+library(stringr) # for regular expression work later
+library(tidyverse)
+library(httr)
+library(jsonlite)
+library(ggplot2)
+library(DT)
+```
+
+Next, download the relevant tables from Neotoma
+```{r download-tables}
+tables = c("datasets","datasetdatabases","constituentdatabases","datasettypes")
+
+for (q in seq(length(tables))) {
+  tablename=tables[q]
+  
+  length_table = content(GET(paste0("https://api.neotomadb.org/v2.0/data/dbtables/",tablename,"?count=true")))$data
+  
+  divider = 80000
+  num_reps = ceiling(as.numeric(length_table[[1]]$count)/divider)
+  
+  data_list = list()
+  for (i in seq(num_reps)) {
+    start= (i-1)*divider
+    end = divider
+    data_list_portion = content(GET(paste0("https://api.neotomadb.org/v2.0/data/dbtables/",tablename,"?count=false&offset=",start,"&limit=",end)))$data
+    
+    if (!is.null(data_list_portion)) {
+      data_list = append(data_list,data_list_portion)
+    }
+  }
+  
+  
+  data_mat = matrix(nrow=length(data_list),ncol=length(data_list[[1]]))
+  
+  for (i in seq(length(data_list))) {
+    for(j in seq(length(data_list[[1]])) ) {
+      if (!is.null(data_list[[i]][[j]])) {
+        data_mat[i,j] = data_list[[i]][[j]]
+      }}}
+  
+  
+  data_df = as.data.frame(data_mat)
+  
+  
+  names(data_df) =names(data_list_portion[[1]])
+  
+  assign(paste0(tablename,"_df"), data_df)}
+```
+
+Next, I filter for just the vertebrate fauna datasets. Then I break all the distinct datasetids into four big strings, and I use a Neotoma API to get all the data associated with those datasets. And then I do some looping to turn the output lists into dataframes.
+
+``` {r make-verts-data}
+vert_datasets = datasets_df %>% left_join(datasettypes_df, by=join_by(datasettypeid)) %>%
+  dplyr::filter(datasettype=="vertebrate fauna")
+
+datasets_string1 = paste0(vert_datasets$datasetid[1:1340], collapse=",")
+datasets_string2 = paste0(vert_datasets$datasetid[1341:2680], collapse=",")
+datasets_string3 = paste0(vert_datasets$datasetid[2681:4020], collapse=",")
+datasets_string4 = paste0(vert_datasets$datasetid[4021:5337], collapse=",")
+
+
+dat1 = content(GET(paste0("https://api.neotomadb.org/v2.0/data/downloads/",datasets_string1,"?limit=9999")))$data
+dat2 = content(GET(paste0("https://api.neotomadb.org/v2.0/data/downloads/",datasets_string2,"?limit=9999")))$data
+dat3 = content(GET(paste0("https://api.neotomadb.org/v2.0/data/downloads/",datasets_string3,"?limit=9999")))$data
+dat4 = content(GET(paste0("https://api.neotomadb.org/v2.0/data/downloads/",datasets_string4,"?limit=9999")))$data
+
+
+all_dat = dat1 %>% append(dat2) %>% append(dat3) %>% append(dat4)
+
+
+## This first first loop is just to get the number of rows I'll need
+## for my vert_data_mat table
+counter=0
+for (i in seq(length(all_dat))) {
+  for (j in seq(length(all_dat[[i]]$site$collectionunit$dataset$samples))) {
+    for (k in seq(length(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum))) {
+      counter = counter + 1
+    }
+  }
+}
+
+vert_data_mat = matrix(nrow=counter, ncol=17)
+
+
+counter2 = 0
+for (i in seq(length(all_dat))) {
+  for (j in seq(length(all_dat[[i]]$site$collectionunit$dataset$samples))) {
+    for (k in seq(length(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum))) {
+      counter2 = counter2 + 1
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$datasetid)) {
+        vert_data_mat[[counter2,1]] = all_dat[[i]]$site$collectionunit$dataset$datasetid
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$depth)) {
+        vert_data_mat[[counter2,2]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$depth
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$sampleid)) {
+        vert_data_mat[[counter2,3]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$sampleid
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$thickness)) {
+        vert_data_mat[[counter2,4]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$thickness
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$samplename)) {
+        vert_data_mat[[counter2,5]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$samplename
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$igsn)) {
+        vert_data_mat[[counter2,6]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$igsn
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$analysisunitid)) {
+        vert_data_mat[[counter2,7]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$analysisunitid
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$units)) {
+        vert_data_mat[[counter2,8]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$units
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$value)) {
+        vert_data_mat[[counter2,9]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$value
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$context)) {
+        vert_data_mat[[counter2,10]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$context
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$element)) {
+        vert_data_mat[[counter2,11]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$element
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$taxonid)) {
+        vert_data_mat[[counter2,12]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$taxonid
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$symmetry)) {
+        vert_data_mat[[counter2,13]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$symmetry
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$taxongroup)) {
+        vert_data_mat[[counter2,14]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$taxongroup
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$elementtype)) {
+        vert_data_mat[[counter2,15]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$elementtype
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$variablename)) {
+        vert_data_mat[[counter2,16]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$variablename
+      }
+      
+      if(!is.null(all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$ecologicalgroup)) {
+        vert_data_mat[[counter2,17]] = all_dat[[i]]$site$collectionunit$dataset$samples[[j]]$datum[[k]]$ecologicalgroup
+      }
+      
+    }
+  }
+}
+
+all_dat_df = as.data.frame(vert_data_mat)
+
+
+names(all_dat_df) = c("datasetid","depth","sampleid","thickness","samplename","igsn","analysisunitid","units","value","context","element","taxonid","symmetry","taxongroup","elementtype","variablename","ecologicalgroup")
+
+
+all_dat_df = all_dat_df %>% left_join(datasetdatabases_df,by=join_by(datasetid)) %>% left_join(constituentdatabases_df,by=join_by(databaseid))
+```
+
+Now I clean up the taxa names in various ways, and I try to retain information on the clean ups I'm doing. 
+
+The first warning below is important: in 7 rows, there are more than one slash involved, so I'm losing some taxonomic information there.
+```{r clean-data}
+
+## var_cfgenus_remove is the version of variable name with cf. and ? removed from the beginnings
+all_dat_df$var_cfgenus_remove <- gsub("^(\\?|cf\\.?|\\?\\s*cf\\.?)\\s*", "", all_dat_df$variablename)
+
+##cf_or_q is a field that says whether the original version of a name had a cf. or question mark at the beginning
+all_dat_df = all_dat_df %>% dplyr::mutate(cf_or_q = case_when(var_cfgenus_remove != variablename ~ 1,TRUE~ 0))
+
+
+## var_spp_remove removes sp. and spp. from the end of the variablename
+all_dat_df$var_spp_remove <- gsub("\\s+(sp\\.|spp\\.)$", "", all_dat_df$var_cfgenus_remove) 
+
+
+##the sp_spp field says whether a variablename originally had sp. or spp. at the end
+all_dat_df = all_dat_df %>% dplyr::mutate(sp_spp = case_when(
+  var_cfgenus_remove != var_spp_remove ~ 1,TRUE~ 0))
+
+## all_dat_df_split splits up any taxonomic IDs joined by a slash (/) into separate observations. For the second variable, it's sometimes written out like Canis lupus/C. dirus, so I also make sure to replace the second C. with the original genus name
+all_dat_df_split = separate(all_dat_df,var_spp_remove,into=c("var1","var2"),sep="/") %>%
+  mutate(
+    var2 = if_else(
+      str_detect(var2, "^[A-Z]\\."),                               # if taxon_clean starts with "X."
+      str_replace(var2, "^[A-Z]\\.", str_extract(var1, "^[^ ]+")), # replace "X." with first word of var1
+      var2
+    )
+  )
+
+
+split_begin = all_dat_df_split %>% dplyr::select(var1,cf_or_q,sp_spp,databasename)
+names(split_begin)[1] = "taxon_clean"
+split_end = all_dat_df_split %>% dplyr::select(var2,cf_or_q,sp_spp,databasename)
+names(split_end)[1] = "taxon_clean"
+
+all_dat_df_split = split_begin %>% rbind(split_end) %>% drop_na(taxon_clean)
+
+
+## This last cleaning is to find whether there are cfs. after the genus name but before the species name and remove those
+all_dat_df_split  = all_dat_df_split  %>%
+  mutate(
+    cf_species = str_detect(taxon_clean, "cf\\. [A-Z]\\."),                          # TRUE if cf. X. is present
+    taxon_clean = str_replace(taxon_clean, "cf\\. [A-Z]\\.[ ]?", "")                      # remove cf. X. and the following space
+  )
+```
+
+Lastly, I load up the big MDD table and I start to match to it, first at the level of species, then genus, then family, then order. I combine all the pieces and use that at the end to make some visualizations.
+
+```{r match}
+mdd = read.csv("Species_Syn_v2.2.csv") %>% distinct(MDD_original_combination,.keep_all=TRUE)
+
+
+## harmonization by MDD species
+harm_by_species = all_dat_df_split %>% left_join(mdd,by=join_by("taxon_clean"=="MDD_original_combination")) %>% drop_na(MDD_order) %>% select(taxon_clean,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,cf_species,databasename) %>% dplyr::mutate(certainty="species")
+
+harm_by_species_na = all_dat_df_split %>% left_join(mdd,by=join_by("taxon_clean"=="MDD_original_combination")) %>% dplyr::filter(is.na(MDD_order))
+
+harm_by_species_distinct_na = harm_by_species_na %>% distinct(taxon_clean)
+
+
+## harmonization by MDD genera
+mdd_genera = mdd %>% distinct(MDD_genus,.keep_all=TRUE)
+
+harm_by_genus = all_dat_df_split %>% dplyr::filter(taxon_clean %in% harm_by_species_distinct_na$taxon_clean) %>% left_join(mdd_genera,by=join_by("taxon_clean"=="MDD_genus")) %>% drop_na(MDD_order)  %>% dplyr::mutate(MDD_genus = taxon_clean) %>% select(taxon_clean,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,cf_species,databasename) %>% dplyr::mutate(certainty="genus")
+
+
+harm_by_genus_na = all_dat_df_split %>% dplyr::filter(taxon_clean %in% harm_by_species_distinct_na$taxon_clean) %>% left_join(mdd_genera,by=join_by("taxon_clean"=="MDD_genus")) %>% dplyr::filter(is.na(MDD_order)) 
+
+harm_by_genus_distinct_na = harm_by_genus_na %>% distinct(taxon_clean)
+
+## harmonization by MDD family
+mdd_families = mdd %>% distinct(MDD_family,.keep_all=TRUE)
+
+harm_by_family = all_dat_df_split %>% dplyr::filter(taxon_clean %in% harm_by_genus_distinct_na$taxon_clean) %>% left_join(mdd_families,by=join_by("taxon_clean"=="MDD_family")) %>% drop_na(MDD_order)  %>% dplyr::mutate(MDD_family = taxon_clean) %>% select(taxon_clean,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,cf_species,databasename) %>% dplyr::mutate(certainty="family")
+
+
+harm_by_family_na =  all_dat_df_split %>% dplyr::filter(taxon_clean %in% harm_by_genus_distinct_na$taxon_clean) %>% left_join(mdd_families,by=join_by("taxon_clean"=="MDD_family")) %>% dplyr::filter(is.na(MDD_order))
+
+harm_by_family_distinct_na = harm_by_family_na %>% distinct(taxon_clean)
+
+
+## harmonization by MDD orders
+mdd_orders = mdd %>% distinct(MDD_order,.keep_all=TRUE)
+
+harm_by_order = all_dat_df_split %>% dplyr::filter(taxon_clean %in% harm_by_family_distinct_na$taxon_clean) %>% left_join(mdd_orders,by=join_by("taxon_clean"=="MDD_order")) %>% drop_na(MDD_species)  %>%
+  dplyr::mutate(MDD_order = taxon_clean) %>% select(taxon_clean,MDD_genus,MDD_order,MDD_family,cf_or_q,sp_spp,cf_species,databasename) %>% dplyr::mutate(certainty="order")
+
+
+harm_by_order_na =  all_dat_df_split %>% dplyr::filter(taxon_clean %in% harm_by_family_distinct_na$taxon_clean) %>% left_join(mdd_orders,by=join_by("taxon_clean"=="MDD_order")) %>% dplyr::filter(is.na(MDD_species))
+
+harm_by_order_distinct_na = harm_by_order_na %>% distinct(taxon_clean)
+
+
+all_harm = harm_by_species %>% rbind(harm_by_genus) %>% rbind(harm_by_family) %>% rbind(harm_by_order)
+
+
+##1790 unmatched taxa in harm_by_species
+##1634 in harm_by_order older
+#1396 in harm_by_order newer
+
+
+all_harm$MDD_order <- factor(all_harm$MDD_order, levels = c("Rodentia", "Carnivora", "Artiodactyla","Lagomorpha","Eulipotyphla","Chiroptera","Perissodactyla","Didelphimorphia","Proboscidea","Cingulata","Pilosa","Sirenia","Primates"))
+
+ggplot(all_harm) +
+  geom_bar(mapping=aes(x=MDD_order,fill=databasename)) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+
+famharm = all_harm %>% group_by(MDD_order) %>% dplyr::filter(certainty != "order") %>% distinct(MDD_family) %>% count() %>% arrange(desc(n))
+
+names(famharm) = c("order","number families")
+
+genharm = all_harm %>% group_by(MDD_order) %>% dplyr::filter(!certainty %in% c("order","family")) %>% distinct(MDD_genus) %>% count() %>% arrange(desc(n))
+
+names(genharm) = c("order","number genera")
+
+
+specharm = all_harm %>% group_by(MDD_order) %>% dplyr::filter(!certainty %in% c("order","family","genus")) %>% distinct(taxon_clean) %>% count() %>% arrange(desc(n))
+
+names(specharm) = c("order","number species")
+
+famharm %>% left_join(genharm) %>% left_join(specharm) %>% datatable(rownames=FALSE,options = list(pageLength = 12))
+```
+
