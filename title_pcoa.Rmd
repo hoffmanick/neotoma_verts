@@ -1,0 +1,111 @@
+```{r chunk1}
+library(stringr)
+library(tidyverse)
+
+setwd("../Documents")
+tags = read.csv("NeotomaDB_Zotero.csv")
+
+cca = read.csv("CombinedCitationAnalysis.csv") %>% dplyr::filter(vertebrates != "no" | is.na(vertebrates)) %>% dplyr::filter(is.na(study_scope) | study_scope != "genus")
+
+cca_tags = cca %>% left_join(tags,by=join_by('article_title' == "Title")) %>% distinct(article_title,.keep_all=TRUE)
+
+man_tags = cca_tags %>% mutate(word_list = str_split(Manual.Tags, ";")) %>%
+  tidyr::unnest(word_list) %>% group_by(word_list) %>% count() %>% arrange(desc(n))
+
+auto_tags = cca_tags %>% mutate(word_list = str_split(Automatic.Tags, ";")) %>%
+  tidyr::unnest(word_list) %>% group_by(word_list) %>% count() %>% arrange(desc(n))
+
+
+cca_cleantitles = cca %>% mutate(cleaned = str_to_lower(article_title)) %>% mutate(cleaned = str_replace_all(cleaned, "[[:punct:]]", ""))
+index_arts = seq(length(cca_cleantitles[[1]]))
+cca_split = cca_cleantitles %>% cbind(index_arts) %>% 
+  select(cleaned,index_arts) %>% mutate(lists = str_split(cleaned, " ")) %>% unnest(lists) %>% 
+  mutate(present=1) %>% 
+  filter(lists != "") %>%
+  filter(str_detect(lists, "^[A-Za-z]+$")) %>% dplyr::filter(nchar(lists) > 2) %>% dplyr::filter(!lists %in% c("the","and","from"))
+
+cca_wide = pivot_wider(cca_split,id_cols=index_arts,names_from=lists,values_from=present) %>%
+  mutate(across(everything(), ~ ifelse(map_lgl(., ~ length(.x) > 0), 1, 0)))
+
+cca_wide_data = cca_wide %>% select(!index_arts)
+library(vegan)
+library(ape)
+
+dist = vegdist(cca_wide_data,method="bray")
+
+pcoa_res <- pcoa(dist)
+
+plot(pcoa_res$vectors[,1], pcoa_res$vectors[,2],
+     xlab = "PCoA1", ylab = "PCoA2",
+     pch = 19, col = "blue")
+
+
+pcoa_cap <- capscale(cca_wide_data ~ 1, distance = "bray")
+
+# Fit species to ordination
+fit <- envfit(pcoa_cap, cca_wide_data, permutations = 999)
+
+
+arrow_strength <- fit$vectors$r
+# Keep only species with r^2 > threshold (e.g., top 2)
+top_species <- names(sort(arrow_strength, decreasing = TRUE))[1:5]
+
+plot(pcoa_cap, display = "sites", main = "PCoA with Top Species Arrows")
+points(pcoa_cap, display = "sites", pch = 19, col = "blue")
+arrows(0, 0,
+       fit$vectors$arrows[top_species, 1],
+       fit$vectors$arrows[top_species, 2],
+       length = 0.1, col = "red", lwd = 2)
+text(fit$vectors$arrows[top_species, 1],
+     fit$vectors$arrows[top_species, 2],
+     labels = top_species,
+     col = "red", pos = 3)
+
+
+top_species <- names(sort(arrow_strength, decreasing = TRUE))[6:10]
+
+plot(pcoa_cap, display = "sites", main = "PCoA with Top Species Arrows")
+points(pcoa_cap, display = "sites", pch = 19, col = "blue")
+arrows(0, 0,
+       fit$vectors$arrows[top_species, 1],
+       fit$vectors$arrows[top_species, 2],
+       length = 0.1, col = "red", lwd = 2)
+text(fit$vectors$arrows[top_species, 1],
+     fit$vectors$arrows[top_species, 2],
+     labels = top_species,
+     col = "red", pos = 3)
+
+
+
+top_species <- names(sort(arrow_strength, decreasing = TRUE))[11:15]
+
+plot(pcoa_cap, display = "sites", main = "PCoA with Top Species Arrows")
+points(pcoa_cap, display = "sites", pch = 19, col = "blue")
+arrows(0, 0,
+       fit$vectors$arrows[top_species, 1],
+       fit$vectors$arrows[top_species, 2],
+       length = 0.1, col = "red", lwd = 2)
+text(fit$vectors$arrows[top_species, 1],
+     fit$vectors$arrows[top_species, 2],
+     labels = top_species,
+     col = "red", pos = 3)
+
+```
+
+```{r chunk2}
+
+library(plotly)
+library(ggplot2)
+
+cca_wide$pcoa1 = pcoa_res$vectors[,1]
+
+cca_wide$pcoa2 = pcoa_res$vectors[,2]
+
+cca2 = cca[c(1:278,280:371),]
+cca_wide$article_title = cca2$article_title
+this = ggplot(cca_wide) +
+  geom_point(mapping=aes(x=pcoa1,y=pcoa2,text=article_title)) +
+  theme_bw()
+
+ggplotly(this, tooltip="text")
+```
