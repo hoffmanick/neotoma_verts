@@ -776,9 +776,10 @@ n_datasets = n_datasets %>% cbind(rank)
 names(n_datasets)[[4]] = "rank"
 
 ggplot(n_datasets) +
-  geom_line(mapping=aes(x=rank,y=log(n))) +
+  geom_line(mapping=aes(x=rank,y=n)) +
   theme_bw() +
-  labs(x="Taxonomic Abundance Ranking", y="Number of IDs (logarithmic)")
+  labs(x="Taxonomic Abundance Ranking", y="Number of Datasets Identifying (logarithmic)") +
+  scale_y_log10()
 ```
 
 ## Taxonomic Precision
